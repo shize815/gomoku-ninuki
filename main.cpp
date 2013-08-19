@@ -17,10 +17,10 @@ int main(){
         cin>>coup1;
         cin>>coup2;
         j.joue(coup1,coup2);
-        j.regles();
+        //j.regles();
         j.affiche();
         ia.repond();
-        j.regles();
+        //j.regles();
     }
 /*
     while(!j.fin()){
