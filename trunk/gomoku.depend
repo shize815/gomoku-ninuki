@@ -6,7 +6,7 @@
 1376670700 /home/dworkin/ngrams/gomoku/src/jeu.cpp
 	"../include/jeu.h"
 
-1376944691 /home/dworkin/ngrams/gomoku/include/jeu.h
+1376944988 /home/dworkin/ngrams/gomoku/include/jeu.h
 	<vector>
 	<iostream>
 
@@ -14,7 +14,7 @@
 	"../include/jeu.h"
 	<stdlib.h>
 
-1376944454 /home/dworkin/ngrams/gomoku/include/IA.h
+1376945010 /home/dworkin/ngrams/gomoku/include/IA.h
 	"./jeu.h"
 	<vector>
 	<iostream>

@@ -57,6 +57,7 @@ void jeu::joue(int coup1, int coup2){ //Le joueur 1.
     cx1=coup1;
     cy1=coup2;
     cc=1;
+    regles();
 }
 
 void jeu::joue2(int coup1, int coup2){ //Le joueur 1.
@@ -67,6 +68,7 @@ void jeu::joue2(int coup1, int coup2){ //Le joueur 1.
     cx2=coup1;
     cy2=coup2;
     cc=2;
+    regles();
 }
 
 
@@ -160,6 +162,14 @@ void jeu::regles(){
 
     int jeu::getplateau(int x, int y){
         return plateau[x][y];
+    }
+
+
+    int jeu::getcx(){
+        return cx;
+    }
+    int jeu::getcy(){
+        return cy;
     }
 
     int jeu::getcx1(){

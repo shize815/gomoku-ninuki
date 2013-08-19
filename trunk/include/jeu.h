@@ -10,6 +10,9 @@ struct coup{
 
 using namespace std;
 
+//Jeu contient tout ce qui a attrait au jeu (la résolution des prises, la détection d'un gagnant...)
+//La classe conserve toutes les informations liés au plateau.
+
 class jeu
 {
     public:
@@ -28,11 +31,17 @@ class jeu
 
         //ACCESSEURS :
         int getplateau(int x, int y);
+
+
+        int getcx();
+        int getcy();
+
         int getcx1();
         int getcy1();
 
         int getcx2();
         int getcy2();
+
 
         int getp1();
         int getp2();
