@@ -50,110 +50,37 @@ void jeu::affiche(){
 }
 
 
-void jeu::joue(int coup1, int coup2){
+void jeu::joue(int coup1, int coup2){ //Le joueur 1.
     plateau[coup1][coup2]=1;
     cx=coup1;
     cy=coup2;
+    cx1=coup1;
+    cy1=coup2;
     cc=1;
 }
 
-void jeu::joue2(int coup1, int coup2){
+void jeu::joue2(int coup1, int coup2){ //Le joueur 1.
     plateau[coup1][coup2]=2;
     cx=coup1;
     cy=coup2;
-    cc=2;
-}
 
-bool coupIntelligent(coup * c){
-    //Ordi a 4 pions alignés :
-    for(int x=0; x<plateau.size(); x++){
-        for(int y=0; y<plateau.size(); y++){
-            if(plateau()){
-
-            }
-        }
-
-    }
-
-
-}
-
-
-bool jeu::coupRand(coup * c){
-
-    int c1= rand()%3-1+cx1;
-    int c2= rand()%3-1+cy1;
-    if(c1<0){
-        c1=0;
-    }
-    if(c1>15){
-        c1=15;
-    }
-    if(c2<0){
-        c2=0;
-    }
-    if(c2>15){
-        c2=15;
-    }
-    if(plateau[c1][c2]==0){
-       //plateau[c1][c2]=2;
-    } else {
-        while(plateau[c1][c2]!=0){
-            c1+=rand()%3-1;
-            c2+=rand()%3-1;
-            if(c1<0){
-                c1=0;
-            }
-            if(c1>15){
-                c1=15;
-            }
-            if(c2<0){
-                c2=0;
-            }
-            if(c2>15){
-                c2=15;
-            }
-        }
-        //plateau[c1][c2]=2;
-    }
-    /*
-    cx=c1;
-    cy=c2;
-    cc=2;
-    */
-    //coup retour;
-    c.x=c1;
-    c.y=c2;
-    return true;
-
-}
-
-
-void jeu::repond(){
-
-    coup reponse;
-    if(coupIntelligent(&reponse)){
-        cx = reponse.x;
-        cy = reponse.y;
-    } else {
-        coupRand(&reponse);
-        cx = reponse.x;
-        cy = reponse.y;
-    }
-    plateau[c1][c2]=2;
-    cx=c1;
-    cy=c2;
+    cx2=coup1;
+    cy2=coup2;
     cc=2;
 }
 
 
 bool jeu::fin(){
-    return false;
+    if(v==0){
+        return false;
+    } else {
+        return true;
+    }
 
 }
 
 
-int jeu::lireligne(int x, int y, int d1, int d2, int couleur){
+int jeu::lireligne(int x, int y, int d1, int d2, int couleur){ //renvoi le nombre de pions de la couleur donné aligné dans la direction (d1,d2) een partant de la case (x,y)
     int cpt=0;
     int px=x;
     int py=y;
@@ -227,3 +154,35 @@ void jeu::regles(){
         cout<<"joueur "<<v<<" a gagné"<<endl;
     }
 }
+
+
+    //ACCESSEURS :
+
+    int jeu::getplateau(int x, int y){
+        return plateau[x][y];
+    }
+
+    int jeu::getcx1(){
+        return cx1;
+    }
+    int jeu::getcy1(){
+        return cy1;
+    }
+
+     int jeu::getcx2(){
+        return cx2;
+    }
+    int jeu::getcy2(){
+        return cy2;
+    }
+
+    int jeu::getp1(){
+        return p1;
+    }
+    int jeu::getp2(){
+        return p2;
+    }
+
+    int jeu::getcc(){
+        return cc;
+    }

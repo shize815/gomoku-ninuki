@@ -1,15 +1,25 @@
 # depslib dependency file v1.0
-1376673407 source:/home/dworkin/ngrams/gomoku/main.cpp
+1376944145 source:/home/dworkin/ngrams/gomoku/main.cpp
 	"./include/jeu.h"
+	"./include/IA.h"
 
 1376670700 /home/dworkin/ngrams/gomoku/src/jeu.cpp
 	"../include/jeu.h"
 
-1376673933 /home/dworkin/ngrams/gomoku/include/jeu.h
+1376944691 /home/dworkin/ngrams/gomoku/include/jeu.h
 	<vector>
 	<iostream>
 
 1376673262 source:/home/dworkin/ngrams/gomoku/src/jeu.cpp
 	"../include/jeu.h"
 	<stdlib.h>
+
+1376944454 /home/dworkin/ngrams/gomoku/include/IA.h
+	"./jeu.h"
+	<vector>
+	<iostream>
+	<stdlib.h>
+
+1376944599 source:/home/dworkin/ngrams/gomoku/src/IA.cpp
+	"../include/IA.h"
 
