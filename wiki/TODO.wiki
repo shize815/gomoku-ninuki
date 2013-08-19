@@ -1,0 +1,26 @@
+= Jeux et règles =
+Fait à priori, mais à tester.
+(Pour l'instant les fonctions liés au jeu et à l'IA sont dans une même classe, il faudrait surement séparer cela en deux parties).
+
+
+= Interface graphique=
+
+
+ * Une jolie interface clicable.
+ * Une interaction avec l'IA
+ * Une capacité à utiliser le protocole GTP
+
+
+= IA =
+
+ * IA pseudo-aléatoire : 
+  #fait
+
+ * IA simple : 
+  #Finir la fonction de recherche de coup optimal
+ * Alpha/Beta :
+   #Implémenter l'algo.(facile)
+   #Faire une fonction d'évaluation (moins facile) 
+
+ * UCT/RAVE : 
+   #Implémenter l'algo.
