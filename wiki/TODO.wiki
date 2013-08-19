@@ -1,6 +1,6 @@
 = Jeux et règles =
 Fait à priori, mais à tester.
-(Pour l'instant les fonctions liés au jeu et à l'IA sont dans une même classe, il faudrait surement séparer cela en deux parties).
+
 
 
 = Interface graphique=
