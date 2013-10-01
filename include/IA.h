@@ -14,12 +14,12 @@ class IA
         IA();
         virtual ~IA();
         void repond(); //renvoi un coup donné par l'IA.
-        bool coupRand(coup * c);
-        bool coupIntelligent(coup * c);
-        void setjeu(jeu * jt);
+        bool coupRand(Coup * c);
+        bool coupIntelligent(Coup * c);
+        void setjeu(Jeu * jt);
     protected:
     private:
-        jeu * j;
+        Jeu * j;
 };
 
 #endif // IA_H

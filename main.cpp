@@ -1,46 +1,50 @@
-//#include "./src/jeu.cpp"
+
 #include "./include/jeu.h"
 #include "./include/IA.h"
 
 
 
 int main(){
-    int coup1;
-    int coup2;
-    jeu j;
+    Coup coup;
+    Jeu jeu;
     IA ia;
-    ia.setjeu(&j);
+    ia.setjeu(&jeu);
 
-    while(!j.fin()){
-        j.affiche();
-        cout<<"coup joueur 1 :"<<endl;
-        cin>>coup1;
-        cin>>coup2;
-        j.joue(coup1,coup2);
-        //j.regles();
-        j.affiche();
+    while(!jeu.fin()){
+        jeu.affiche();
+        cout<<"coup joueur 1 :" << endl;
+        cout<<"            y :" << endl;
+        cin>>coup.y;
+        cout<<"            x :" << endl;
+        cin>>coup.x;
+        if (jeu.coupJoueur1(coup) != SUCCES) {
+            cout << "coup invalide" << endl;
+            continue;
+        }
+        //jeu.regles();
+        jeu.affiche();
         ia.repond();
-        //j.regles();
+        //jeu.regles();
     }
 /*
     while(!j.fin()){
         //cout<<"plateau : "<<endl;
-        j.affiche();
+        jeu.affiche();
         cout<<"coup joueur 1 :"<<endl;
         cin>>coup1;
         cin>>coup2;
-        j.joue(coup1,coup2);
-        j.regles();
-        j.affiche();
+        jeu.coupJoueur1(coup1,coup2);
+        jeu.regles();
+        jeu.affiche();
 
         cout<<"coup joueur 2 :"<<endl;
         cin>>coup1;
         cin>>coup2;
-        j.joue2(coup1,coup2);
+        jeu.coupJoueur2(coup1,coup2);
 
 
         //j.repond();
-        j.regles();
+        jeu.regles();
     }
 */
     return 0;
