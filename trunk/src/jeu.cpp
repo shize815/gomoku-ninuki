@@ -49,7 +49,7 @@ void Jeu::affiche(){
         cout<<endl;
     }
     if(v!=0){
-        cout<<"joueur "<<v<<" a gagnÃ©"<<endl;
+        cout<<"joueur "<<v<<" a gagné"<<endl;
     }
 }
 
@@ -58,6 +58,9 @@ Resultat Jeu::coupJoueur1(Coup coup){
         return INVALIDE;
     }
     if (coup.x < 0 || coup.y < 0) {
+        return INVALIDE;
+    }
+    if (plateau[coup.x][coup.y] != 0) {
         return INVALIDE;
     }
 
@@ -92,7 +95,7 @@ bool Jeu::fin(){
 
 }
 
-// renvoye le nombre de pions de la couleur donnÃ© alignÃ© dans la direction (d1,d2) en partant de la case (x,y)
+// renvoye le nombre de pions de la couleur donnée alignés dans la direction (d1,d2) en partant de la case (x,y)
 int Jeu::lireligne(int x, int y, int d1, int d2, int couleur){
     int cpt=0;
     int px=x;
@@ -120,51 +123,59 @@ int Jeu::oppose(int couleur){
 
 }
 
+
 void Jeu::regles(){
-    //ligne
+    // détermine si 5 pierres sont alignées
     for(int i=-1; i<=1; i++){
         for(int j=-1; j<=1; j++){
-            if(i!=0 || j!=0){
-                if(lireligne(dernierCoupX+i,dernierCoupY+j, i, j, joueurDernierCoup) + lireligne(dernierCoupX-i,dernierCoupY-j, -1*i, -1*j, joueurDernierCoup)  >=4){
-                    //VICTOIRE
-                    cout<<"joueur "<<joueurDernierCoup<<"a gagnÃ© la partie"<<endl;
-                    v=joueurDernierCoup;
-                }
+            if(i==0 && j==0){
+                continue;
+            }
+            if(lireligne(dernierCoupX+i,
+                         dernierCoupY+j,
+                          i,
+                          j,
+                          joueurDernierCoup) + lireligne(dernierCoupX-i,dernierCoupY-j, -1*i, -1*j, joueurDernierCoup)  >=4){
+                //VICTOIRE
+                cout<<"joueur "<<joueurDernierCoup<<"a gagné la partie"<<endl;
+                v=joueurDernierCoup;
             }
         }
     }
 
 
-    //mange
+    //mange pions si nécessaire
     for(int i=-1; i<=1; i++){
         for(int j=-1; j<=1; j++){
             if(i!=0 || j!=0){
-                //cout<<"nb l : "<<i<<j<<" : "<<lireligne(cx+i,cy+j, i, j, oppose(joueurDernierCoup))<<endl;
-                if(lireligne(dernierCoupX+i,dernierCoupY+j, i, j, oppose(joueurDernierCoup))==2){
-                    //ON MANGE
-                    if(plateau[dernierCoupX+3*i][dernierCoupY+3*j]==joueurDernierCoup){
-                        cout<<"mangÃ©!"<<endl;
-                        plateau[dernierCoupX+i][dernierCoupY+j]=0;
-                        plateau[dernierCoupX+2*i][dernierCoupY+2*j]=0;
-                        if(joueurDernierCoup==1){
-                            p1+=2;
-                        } else {
-                            p2+=2;
-                        }
-                        if(p1==10){
-                            cout<<"JOUEUR 1 A GAGNE avec 10 prisonniers"<<endl;
-                            v=1;                        }
-                        if(p2==10){
-                            cout<<"JOUEUR 2 A GAGNE avec 10 prisonniers"<<endl;
-                            v=2;
-                        }
+                continue;
+            }
+            //cout<<"nb l : "<<i<<j<<" : "<<lireligne(cx+i,cy+j, i, j, oppose(joueurDernierCoup))<<endl;
+            if(lireligne(dernierCoupX+i,dernierCoupY+j, i, j, oppose(joueurDernierCoup))==2){
+                //ON MANGE
+                if(plateau[dernierCoupX+3*i][dernierCoupY+3*j]==joueurDernierCoup){
+                    cout<<"mangé!"<<endl;
+                    plateau[dernierCoupX+i][dernierCoupY+j]=0;
+                    plateau[dernierCoupX+2*i][dernierCoupY+2*j]=0;
+                    if(joueurDernierCoup==1){
+                        p1+=2;
+                    } else {
+                        p2+=2;
+                    }
+                    if(p1==10){
+                        cout<<"JOUEUR 1 A GAGNE avec 10 prisonniers"<<endl;
+                        v=1;
+                    }
+                    if(p2==10){
+                        cout<<"JOUEUR 2 A GAGNE avec 10 prisonniers"<<endl;
+                        v=2;
                     }
                 }
             }
         }
     }
     if(v!=0){
-        cout<<"joueur "<<v<<" a gagnÃ©"<<endl;
+        cout<<"joueur "<<v<<" a gagné"<<endl;
     }
 }
 
