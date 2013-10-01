@@ -1,8 +1,11 @@
 #include "../include/jeu.h"
 
 #include <stdlib.h>
+#define HAUTEUR_PLATEAU 15
+#define LARGEUR_PLATEAU 15
 
-jeu::jeu()
+
+Jeu::Jeu()
 {
     plateau.resize(15);
     for(int it=0; it<15; it++){
@@ -14,31 +17,32 @@ jeu::jeu()
         }
     }
     v=0;
-    //ctor
 }
 
-jeu::~jeu()
+// destructor
+Jeu::~Jeu()
 {
-    //dtor
+
 }
 
 
-void jeu::affiche(){
+void Jeu::affiche(){
     cout<<"   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15"<<endl;
-    for(int i=0; i<15; i++){
-        cout<<i<<" ";
-        if(i<10){
-        cout<<" ";
-        }
-        for(int j=0; j<15; j++){
 
-            if(plateau[i][j]==0){
+    for(int y=0; y<HAUTEUR_PLATEAU; y++){
+        cout<<y<<" ";
+        if(y<10){
+            cout<<" ";
+        }
+        for(int x=0; x<LARGEUR_PLATEAU; x++){
+
+            if(plateau[x][y]==0){
                 cout<<".  ";
             }
-            if(plateau[i][j]==1){
+            else if(plateau[x][y]==1){
                 cout<<"O  ";
             }
-            if(plateau[i][j]==2){
+            else if(plateau[x][y]==2){
                 cout<<"X  ";
             }
         }
@@ -49,30 +53,37 @@ void jeu::affiche(){
     }
 }
 
+Resultat Jeu::coupJoueur1(Coup coup){
+    if (coup.x > LARGEUR_PLATEAU || coup.y > HAUTEUR_PLATEAU) {
+        return INVALIDE;
+    }
+    if (coup.x < 0 || coup.y < 0) {
+        return INVALIDE;
+    }
 
-void jeu::joue(int coup1, int coup2){ //Le joueur 1.
-    plateau[coup1][coup2]=1;
-    cx=coup1;
-    cy=coup2;
-    cx1=coup1;
-    cy1=coup2;
-    cc=1;
+    plateau[coup.x][coup.y]=1;
+    dernierCoupX=coup.x;
+    dernierCoupY=coup.y;
+    cx1=coup.x;
+    cy1=coup.y;
+    joueurDernierCoup=1;
+    regles();
+    return SUCCES;
+}
+
+void Jeu::coupJoueur2(Coup coup){
+    plateau[coup.x][coup.y]=2;
+    dernierCoupX=coup.x;
+    dernierCoupY=coup.y;
+
+    cx2=coup.x;
+    cy2=coup.y;
+    joueurDernierCoup=2;
     regles();
 }
 
-void jeu::joue2(int coup1, int coup2){ //Le joueur 1.
-    plateau[coup1][coup2]=2;
-    cx=coup1;
-    cy=coup2;
 
-    cx2=coup1;
-    cy2=coup2;
-    cc=2;
-    regles();
-}
-
-
-bool jeu::fin(){
+bool Jeu::fin(){
     if(v==0){
         return false;
     } else {
@@ -81,8 +92,8 @@ bool jeu::fin(){
 
 }
 
-
-int jeu::lireligne(int x, int y, int d1, int d2, int couleur){ //renvoi le nombre de pions de la couleur donné aligné dans la direction (d1,d2) een partant de la case (x,y)
+// renvoye le nombre de pions de la couleur donné aligné dans la direction (d1,d2) en partant de la case (x,y)
+int Jeu::lireligne(int x, int y, int d1, int d2, int couleur){
     int cpt=0;
     int px=x;
     int py=y;
@@ -96,7 +107,7 @@ int jeu::lireligne(int x, int y, int d1, int d2, int couleur){ //renvoi le nombr
     return cpt;
 }
 
-int jeu::oppose(int couleur){
+int Jeu::oppose(int couleur){
     if(couleur==2){
         return 1;
     }
@@ -109,15 +120,15 @@ int jeu::oppose(int couleur){
 
 }
 
-void jeu::regles(){
+void Jeu::regles(){
     //ligne
     for(int i=-1; i<=1; i++){
         for(int j=-1; j<=1; j++){
             if(i!=0 || j!=0){
-                if(lireligne(cx+i,cy+j, i, j, cc) +lireligne(cx-i,cy-j, -1*i, -1*j, cc)  >=4){
+                if(lireligne(dernierCoupX+i,dernierCoupY+j, i, j, joueurDernierCoup) + lireligne(dernierCoupX-i,dernierCoupY-j, -1*i, -1*j, joueurDernierCoup)  >=4){
                     //VICTOIRE
-                    cout<<"joueur "<<cc<<"a gagné la partie"<<endl;
-                    v=cc;
+                    cout<<"joueur "<<joueurDernierCoup<<"a gagné la partie"<<endl;
+                    v=joueurDernierCoup;
                 }
             }
         }
@@ -128,14 +139,14 @@ void jeu::regles(){
     for(int i=-1; i<=1; i++){
         for(int j=-1; j<=1; j++){
             if(i!=0 || j!=0){
-                //cout<<"nb l : "<<i<<j<<" : "<<lireligne(cx+i,cy+j, i, j, oppose(cc))<<endl;
-                if(lireligne(cx+i,cy+j, i, j, oppose(cc))==2){
+                //cout<<"nb l : "<<i<<j<<" : "<<lireligne(cx+i,cy+j, i, j, oppose(joueurDernierCoup))<<endl;
+                if(lireligne(dernierCoupX+i,dernierCoupY+j, i, j, oppose(joueurDernierCoup))==2){
                     //ON MANGE
-                    if(plateau[cx+3*i][cy+3*j]==cc){
+                    if(plateau[dernierCoupX+3*i][dernierCoupY+3*j]==joueurDernierCoup){
                         cout<<"mangé!"<<endl;
-                        plateau[cx+i][cy+j]=0;
-                        plateau[cx+2*i][cy+2*j]=0;
-                        if(cc==1){
+                        plateau[dernierCoupX+i][dernierCoupY+j]=0;
+                        plateau[dernierCoupX+2*i][dernierCoupY+2*j]=0;
+                        if(joueurDernierCoup==1){
                             p1+=2;
                         } else {
                             p2+=2;
@@ -160,39 +171,39 @@ void jeu::regles(){
 
     //ACCESSEURS :
 
-    int jeu::getplateau(int x, int y){
+    int Jeu::getplateau(int x, int y){
         return plateau[x][y];
     }
 
 
-    int jeu::getcx(){
-        return cx;
+    int Jeu::getdernierCoupX(){
+        return dernierCoupX;
     }
-    int jeu::getcy(){
-        return cy;
+    int Jeu::getdernierCoupY(){
+        return dernierCoupY;
     }
 
-    int jeu::getcx1(){
+    int Jeu::getcx1(){
         return cx1;
     }
-    int jeu::getcy1(){
+    int Jeu::getcy1(){
         return cy1;
     }
 
-     int jeu::getcx2(){
+     int Jeu::getcx2(){
         return cx2;
     }
-    int jeu::getcy2(){
+    int Jeu::getcy2(){
         return cy2;
     }
 
-    int jeu::getp1(){
+    int Jeu::getp1(){
         return p1;
     }
-    int jeu::getp2(){
+    int Jeu::getp2(){
         return p2;
     }
 
-    int jeu::getcc(){
-        return cc;
+    int Jeu::getjoueurDernierCoup(){
+        return joueurDernierCoup;
     }

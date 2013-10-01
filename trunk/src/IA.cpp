@@ -6,7 +6,7 @@ IA::IA()
     //ctor
 }
 
-void IA::setjeu(jeu * jt){
+void IA::setjeu(Jeu * jt){
     j = jt;
 }
 
@@ -17,7 +17,7 @@ IA::~IA()
 
 
 
-bool IA::coupIntelligent(coup * c){ //TODO!
+bool IA::coupIntelligent(Coup * c){ //TODO!
     //Ordi a 4 pions alignés :
     /*
     for(int x=0; x<plateau.size(); x++){
@@ -34,7 +34,7 @@ bool IA::coupIntelligent(coup * c){ //TODO!
 }
 
 
-bool IA::coupRand(coup * c){
+bool IA::coupRand(Coup * c){
 
     int c1= rand()%3-1+j->getcx1();
     int c2= rand()%3-1+j->getcy1();
@@ -86,11 +86,11 @@ bool IA::coupRand(coup * c){
 
 void IA::repond(){
 
-    coup reponse;
+    Coup reponse;
     if(coupIntelligent(&reponse)){
 
     } else {
         coupRand(&reponse);
     }
-    j->joue2(reponse.x, reponse.y);
+    j->coupJoueur2(reponse);
 }

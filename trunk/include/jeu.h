@@ -3,9 +3,14 @@
 #include <vector>
 #include <iostream>
 
-struct coup{
+struct Coup{
     int x;
     int y;
+};
+
+enum Resultat {
+    SUCCES,
+    INVALIDE,
 };
 
 using namespace std;
@@ -13,19 +18,21 @@ using namespace std;
 //Jeu contient tout ce qui a attrait au jeu (la résolution des prises, la détection d'un gagnant...)
 //La classe conserve toutes les informations liés au plateau.
 
-class jeu
+class Jeu
 {
     public:
-        jeu();
-        virtual ~jeu();
-        void affiche(); //Affiche le palteau dans le terminal.
-        void joue(int coup1, int coup2); //Fait jouer le coup au joueur 1
-        void joue2(int coup1, int coup2); //Fait jouer le coup au joueur 2
+        Jeu();
+        virtual ~Jeu();
+        void affiche(); //Affiche le plateau dans le terminal.
+        Resultat coupJoueur1(Coup coup); //Fait jouer le coup au joueur 1
+        void coupJoueur2(Coup coup); //Fait jouer le coup au joueur 2
 
-        bool fin(); //renvoi vrai si la partie est fini.
+        bool fin(); //renvoie vrai si la partie est finie.
         void regles(); //Applique les règles du jeu.
         int oppose(int couleur); //retourne la couleur inverse à la couleur entrée
-        int lireligne(int x, int y, int d1, int d2, int couleur); //renvoi le nombre de pions de la couleur donné aligné dans la direction (d1,d2) een partant de la case (x,y)
+
+        //renvoie le nombre de pions de la couleur donné aligné dans la direction (d1,d2) een partant de la case (x,y)
+        int lireligne(int x, int y, int d1, int d2, int couleur);
 
 
 
@@ -33,8 +40,8 @@ class jeu
         int getplateau(int x, int y);
 
 
-        int getcx();
-        int getcy();
+        int getdernierCoupX();
+        int getdernierCoupY();
 
         int getcx1();
         int getcy1();
@@ -46,7 +53,7 @@ class jeu
         int getp1();
         int getp2();
 
-        int getcc();
+        int getjoueurDernierCoup();
 
 
 
@@ -55,8 +62,8 @@ class jeu
         vector < vector <int> > plateau;
 
         //Dernier coup
-        int cx;
-        int cy;
+        int dernierCoupX;
+        int dernierCoupY;
 
 
         //Dernier coup J1
@@ -70,11 +77,11 @@ class jeu
 
 
         //Numero du joueur ayant fait le dernier coup
-        int cc;
+        int joueurDernierCoup;
 
         int p1; //prisonniers du j1
         int p2;
-        int v; //0 si la partie est en cours, sinon le numero de vainceur.
+        int v; //0 si la partie est en cours, sinon le numero de vainqueur.
 };
 
 #endif // JEU_H
