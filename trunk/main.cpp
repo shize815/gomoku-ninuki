@@ -40,7 +40,9 @@ void joueurContreJoueur(){
     while(!jeu.fin()){
         jeu.affiche();
         cout<<"coup joueur " << coup.joueur << " :" <<endl;
+        cout<<"            y :" << endl;
         cin>>coup.y;
+        cout<<"            x :" << endl;
         cin>>coup.x;
         if (jeu.jouerCoup(coup) != SUCCES){
             //le joueur doit rejouer
