@@ -139,11 +139,10 @@ void Jeu::regles(){
         }
     }
 
-
     //mange pions si nécessaire
     for(int i=-1; i<=1; i++){
         for(int j=-1; j<=1; j++){
-            if(i!=0 || j!=0){
+            if(i==0 && j==0){
                 continue;
             }
             //cout<<"nb l : "<<i<<j<<" : "<<lireligne(cx+i,cy+j, i, j, oppose(joueurDernierCoup))<<endl;
