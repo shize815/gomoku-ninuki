@@ -1,8 +1,6 @@
 #include "../include/jeu.h"
 
 #include <stdlib.h>
-#define HAUTEUR_PLATEAU 15
-#define LARGEUR_PLATEAU 15
 
 using namespace std;
 
@@ -17,7 +15,7 @@ Jeu::Jeu()
             plateau[i][j]=0;
         }
     }
-    v=0;
+    joueurVictorieux=0;
 }
 
 // destructor
@@ -28,13 +26,25 @@ Jeu::~Jeu()
 
 
 void Jeu::affiche(){
-    cout<<"   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15"<<endl;
-
-    for(int y=0; y<HAUTEUR_PLATEAU; y++){
-        cout<<y<<" ";
-        if(y<10){
-            cout<<" ";
+    //numéros des colonnes affichés en haut
+    cout <<"   ";
+    for (int x=0; x<LARGEUR_PLATEAU; x++){
+        if (x<10){
+            cout<<x<<"  ";
+        } else{
+            cout<<x<<" ";
         }
+    }
+    cout << endl;
+
+    //reste du plateau
+    for(int y=0; y<HAUTEUR_PLATEAU; y++){
+        if(y<10){
+            cout<<y<<"  ";
+        } else {
+            cout<<y<<" ";
+        }
+
         for(int x=0; x<LARGEUR_PLATEAU; x++){
 
             if(plateau[x][y]==0){
@@ -49,8 +59,9 @@ void Jeu::affiche(){
         }
         cout<<endl;
     }
-    if(v!=0){
-        cout<<"joueur "<<v<<" a gagné"<<endl;
+
+    if(joueurVictorieux!=0){
+        cout<<"joueur "<<joueurVictorieux<<" a gagné"<<endl;
     }
 }
 
@@ -67,17 +78,16 @@ Resultat Jeu::jouerCoup(Coup coup){
 
     plateau[coup.x][coup.y]=coup.joueur;
     coupsJoues.push_back(coup);
-    regles(coup);
+    regles();
     return SUCCES;
 }
 
 bool Jeu::fin(){
-    if(v==0){
+    if(joueurVictorieux==0){
         return false;
     } else {
         return true;
     }
-
 }
 
 // renvoye le nombre de pions de la couleur donnée alignés dans la direction (d1,d2) en partant de la case (x,y)
@@ -102,18 +112,16 @@ int Jeu::oppose(int couleur){
     if(couleur==1){
         return 2;
     }
-
     return 0;
-
-
 }
 
+void Jeu::regles(){
+    Coup dernierCoupJoue = coupsJoues.back();
 
-void Jeu::regles(Coup dernierCoupJoue){
     int dernierCoupX = dernierCoupJoue.x;
     int dernierCoupY = dernierCoupJoue.y;
+    int joueurDernierCoup = dernierCoupJoue.joueur;
 
-    int joueurDernierCoup = coupsJoues.back().joueur;
     // détermine si 5 pierres sont alignées
     for(int i=-1; i<=1; i++){
         for(int j=-1; j<=1; j++){
@@ -121,13 +129,12 @@ void Jeu::regles(Coup dernierCoupJoue){
                 continue;
             }
             if(lireligne(dernierCoupX+i,
-                         dernierCoupY+j,
-                          i,
-                          j,
-                          joueurDernierCoup) + lireligne(dernierCoupX-i,dernierCoupY-j, -1*i, -1*j, joueurDernierCoup)  >=4){
+                         dernierCoupY+j, i, j,
+                          joueurDernierCoup) +
+               lireligne(dernierCoupX-i,dernierCoupY-j, -1*i, -1*j, joueurDernierCoup)  >=4){
                 //VICTOIRE
                 cout<<"joueur "<<joueurDernierCoup<<"a gagné la partie"<<endl;
-                v=joueurDernierCoup;
+                joueurVictorieux=joueurDernierCoup;
             }
         }
     }
@@ -153,18 +160,18 @@ void Jeu::regles(Coup dernierCoupJoue){
                     }
                     if(p1==10){
                         cout<<"JOUEUR 1 A GAGNE avec 10 prisonniers"<<endl;
-                        v=1;
+                        joueurVictorieux=1;
                     }
                     if(p2==10){
                         cout<<"JOUEUR 2 A GAGNE avec 10 prisonniers"<<endl;
-                        v=2;
+                        joueurVictorieux=2;
                     }
                 }
             }
         }
     }
-    if(v!=0){
-        cout<<"joueur "<<v<<" a gagné"<<endl;
+    if(joueurVictorieux!=0){
+        cout<<"joueur "<<joueurVictorieux<<" a gagné"<<endl;
     }
 }
 

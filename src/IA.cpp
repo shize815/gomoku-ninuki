@@ -1,21 +1,20 @@
 #include "../include/IA.h"
 
-
+//ctor
 IA::IA()
 {
-    //ctor
+
 }
 
-void IA::setjeu(Jeu * jt){
-    j = jt;
+void IA::setjeu(Jeu * jeu){
+    this->jeu = jeu;
 }
 
+//dtor
 IA::~IA()
 {
-    //dtor
+
 }
-
-
 
 bool IA::coupIntelligent(Coup * c){ //TODO!
     //Ordi a 4 pions alignés :
@@ -26,61 +25,35 @@ bool IA::coupIntelligent(Coup * c){ //TODO!
 
             }
         }
-
     }
     */
     return false;
-
 }
 
+bool IA::coupRand(Coup * coup){
+    int cx=jeu->getcoupsJoues().back().x;
+    int cy=jeu->getcoupsJoues().back().y;
 
-bool IA::coupRand(Coup * c){
-
-    int c1= rand()%3-1+j->getcoupsJoues().back().x;
-    int c2= rand()%3-1+j->getcoupsJoues().back().y;
-    if(c1<0){
-        c1=0;
-    }
-    if(c1>15){
-        c1=15;
-    }
-    if(c2<0){
-        c2=0;
-    }
-    if(c2>15){
-        c2=15;
-    }
-    if(j->getplateau(c1,c2)==0){
-       //plateau[c1][c2]=2;
-    } else {
-        while(j->getplateau(c1,c2)!=0){
-            c1+=rand()%3-1;
-            c2+=rand()%3-1;
-            if(c1<0){
-                c1=0;
-            }
-            if(c1>15){
-                c1=15;
-            }
-            if(c2<0){
-                c2=0;
-            }
-            if(c2>15){
-                c2=15;
-            }
+    do{
+        cx+=rand() % 3 - 1;
+        cy+=rand() % 3 - 1;
+        if(cx<0){
+            cx=0;
         }
-        //plateau[c1][c2]=2;
-    }
-    /*
-    cx=c1;
-    cy=c2;
-    cc=2;
-    */
-    //coup retour;
-    c->x=c1;
-    c->y=c2;
-    return true;
+        if(cx>LARGEUR_PLATEAU - 1){
+            cx=LARGEUR_PLATEAU - 1;
+        }
+        if(cy<0){
+            cy=0;
+        }
+        if(cy>HAUTEUR_PLATEAU - 1){
+            cy=HAUTEUR_PLATEAU - 1;
+        }
+    }while(jeu->getplateau(cx,cy)!=0);
 
+    coup->x=cx;
+    coup->y=cy;
+    return true;
 }
 
 
@@ -93,5 +66,5 @@ void IA::repond(){
     } else {
         coupRand(&reponse);
     }
-    j->jouerCoup(reponse);
+    jeu->jouerCoup(reponse);
 }

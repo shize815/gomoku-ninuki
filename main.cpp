@@ -13,7 +13,6 @@ void joueurContreIA(){
     IA ia;
     ia.setjeu(&jeu);
 
-    coup.joueur = 1;
     while(!jeu.fin()){
         jeu.affiche();
         cout<<"coup joueur 1 :" << endl;
@@ -23,7 +22,7 @@ void joueurContreIA(){
         cin>>coup.x;
         if (jeu.jouerCoup(coup) != SUCCES){
             cout << "coup invalide" << endl;
-            continue;
+            continue; /* fait rejouer joueur 1 */
         }
         jeu.affiche();
         ia.repond();
@@ -31,23 +30,24 @@ void joueurContreIA(){
 }
 
 void joueurContreJoueur(){
-    Coup coup;
+    Coup coup = {
+        .x = 0,
+        .y = 0,
+        .joueur = 1,
+    };
     Jeu jeu;
 
     while(!jeu.fin()){
         jeu.affiche();
-        cout<<"coup joueur 1 :"<<endl;
-        coup.joueur=1;
+        cout<<"coup joueur " << coup.joueur << " :" <<endl;
         cin>>coup.y;
         cin>>coup.x;
-        jeu.jouerCoup(coup);
-
-        jeu.affiche();
-        cout<<"coup joueur 2 :"<<endl;
-        coup.joueur=2;
-        cin>>coup.y;
-        cin>>coup.x;
-        jeu.jouerCoup(coup);
+        if (jeu.jouerCoup(coup) != SUCCES){
+            //le joueur doit rejouer
+            cout << "coup invalide" << endl;
+        } else {
+            coup.joueur = jeu.oppose(coup.joueur);
+        }
     }
 }
 
