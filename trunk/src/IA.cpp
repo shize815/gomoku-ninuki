@@ -36,8 +36,8 @@ bool IA::coupIntelligent(Coup * c){ //TODO!
 
 bool IA::coupRand(Coup * c){
 
-    int c1= rand()%3-1+j->getcx1();
-    int c2= rand()%3-1+j->getcy1();
+    int c1= rand()%3-1+j->getcoupsJoues().back().x;
+    int c2= rand()%3-1+j->getcoupsJoues().back().y;
     if(c1<0){
         c1=0;
     }
@@ -87,10 +87,11 @@ bool IA::coupRand(Coup * c){
 void IA::repond(){
 
     Coup reponse;
+    reponse.joueur=2;
     if(coupIntelligent(&reponse)){
 
     } else {
         coupRand(&reponse);
     }
-    j->coupJoueur2(reponse);
+    j->jouerCoup(reponse);
 }

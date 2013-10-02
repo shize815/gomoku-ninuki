@@ -4,11 +4,16 @@
 #include <cstring>
 
 void joueurContreIA(){
-    Coup coup;
+    Coup coup = {
+        .x = 0,
+        .y = 0,
+        .joueur = 1,
+    };
     Jeu jeu;
     IA ia;
     ia.setjeu(&jeu);
 
+    coup.joueur = 1;
     while(!jeu.fin()){
         jeu.affiche();
         cout<<"coup joueur 1 :" << endl;
@@ -16,7 +21,7 @@ void joueurContreIA(){
         cin>>coup.y;
         cout<<"            x :" << endl;
         cin>>coup.x;
-        if (jeu.coupJoueur1(coup) != SUCCES){
+        if (jeu.jouerCoup(coup) != SUCCES){
             cout << "coup invalide" << endl;
             continue;
         }
@@ -32,15 +37,17 @@ void joueurContreJoueur(){
     while(!jeu.fin()){
         jeu.affiche();
         cout<<"coup joueur 1 :"<<endl;
+        coup.joueur=1;
         cin>>coup.y;
         cin>>coup.x;
-        jeu.coupJoueur1(coup);
+        jeu.jouerCoup(coup);
 
         jeu.affiche();
         cout<<"coup joueur 2 :"<<endl;
+        coup.joueur=2;
         cin>>coup.y;
         cin>>coup.x;
-        jeu.coupJoueur2(coup);
+        jeu.jouerCoup(coup);
     }
 }
 
