@@ -4,6 +4,7 @@
 #define HAUTEUR_PLATEAU 15
 #define LARGEUR_PLATEAU 15
 
+using namespace std;
 
 Jeu::Jeu()
 {
@@ -53,7 +54,7 @@ void Jeu::affiche(){
     }
 }
 
-Resultat Jeu::coupJoueur1(Coup coup){
+Resultat Jeu::jouerCoup(Coup coup){
     if (coup.x > LARGEUR_PLATEAU || coup.y > HAUTEUR_PLATEAU) {
         return INVALIDE;
     }
@@ -64,27 +65,11 @@ Resultat Jeu::coupJoueur1(Coup coup){
         return INVALIDE;
     }
 
-    plateau[coup.x][coup.y]=1;
-    dernierCoupX=coup.x;
-    dernierCoupY=coup.y;
-    cx1=coup.x;
-    cy1=coup.y;
-    joueurDernierCoup=1;
-    regles();
+    plateau[coup.x][coup.y]=coup.joueur;
+    coupsJoues.push_back(coup);
+    regles(coup);
     return SUCCES;
 }
-
-void Jeu::coupJoueur2(Coup coup){
-    plateau[coup.x][coup.y]=2;
-    dernierCoupX=coup.x;
-    dernierCoupY=coup.y;
-
-    cx2=coup.x;
-    cy2=coup.y;
-    joueurDernierCoup=2;
-    regles();
-}
-
 
 bool Jeu::fin(){
     if(v==0){
@@ -124,7 +109,11 @@ int Jeu::oppose(int couleur){
 }
 
 
-void Jeu::regles(){
+void Jeu::regles(Coup dernierCoupJoue){
+    int dernierCoupX = dernierCoupJoue.x;
+    int dernierCoupY = dernierCoupJoue.y;
+
+    int joueurDernierCoup = coupsJoues.back().joueur;
     // détermine si 5 pierres sont alignées
     for(int i=-1; i<=1; i++){
         for(int j=-1; j<=1; j++){
@@ -186,28 +175,6 @@ void Jeu::regles(){
         return plateau[x][y];
     }
 
-
-    int Jeu::getdernierCoupX(){
-        return dernierCoupX;
-    }
-    int Jeu::getdernierCoupY(){
-        return dernierCoupY;
-    }
-
-    int Jeu::getcx1(){
-        return cx1;
-    }
-    int Jeu::getcy1(){
-        return cy1;
-    }
-
-     int Jeu::getcx2(){
-        return cx2;
-    }
-    int Jeu::getcy2(){
-        return cy2;
-    }
-
     int Jeu::getp1(){
         return p1;
     }
@@ -215,6 +182,6 @@ void Jeu::regles(){
         return p2;
     }
 
-    int Jeu::getjoueurDernierCoup(){
-        return joueurDernierCoup;
+    std::vector<Coup> &Jeu::getcoupsJoues(){
+        return coupsJoues;
     }
