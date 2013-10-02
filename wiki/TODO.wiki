@@ -14,13 +14,13 @@ Fait à priori, mais à tester.
 = IA =
 
  * IA pseudo-aléatoire : 
-  #fait
+  # Fait
 
  * IA simple : 
-  #Finir la fonction de recherche de coup optimal
+  # Finir la fonction de recherche de coup optimal
  * Alpha/Beta :
-   #Implémenter l'algo.(facile)
-   #Faire une fonction d'évaluation (moins facile) 
+   # Implémenter l'algo.(facile)
+   # Faire une fonction d'évaluation (moins facile) 
 
  * UCT/RAVE : 
-   #Implémenter l'algo.
+   # Implémenter l'algo.
