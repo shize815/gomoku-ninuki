@@ -1,9 +1,15 @@
 #include "../include/IA.h"
 
+#include <time.h>
+
+using namespace std;
+
 //ctor
 IA::IA()
 {
-
+    /* génère une "seed" pour que la fonction rand ne renvoye pas
+        les mêmes suites de valeurs à chaque fois que le programme est lancé */
+    srand(time(NULL));
 }
 
 void IA::setjeu(Jeu * jeu){
@@ -60,11 +66,28 @@ bool IA::coupRand(Coup * coup){
 void IA::repond(){
 
     Coup reponse;
-    reponse.joueur=2;
+    reponse.joueur=this->joueur;
     if(coupIntelligent(&reponse)){
 
     } else {
         coupRand(&reponse);
     }
-    jeu->jouerCoup(reponse);
+    cout << "l'IA joue x " << reponse.x << ",y " << reponse.y << " (joueur" << reponse.joueur << ")" << endl;
+    if (jeu->jouerCoup(reponse) != SUCCES) {
+        cerr << "l'IA a essayé de jouer un coup invalide!" << endl;
+    }
+}
+
+void IA::setJoueur(int joueur)
+{
+    if (joueur == 1 || joueur == 2) {
+        this->joueur = joueur;
+    } else {
+        cerr << "IA::setJoueur, joueur invalide!" << endl;
+    }
+}
+
+int IA::getJoueur()
+{
+    return joueur;
 }

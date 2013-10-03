@@ -91,15 +91,31 @@ bool Jeu::fin(){
 }
 
 // renvoye le nombre de pions de la couleur donnée alignés dans la direction (d1,d2) en partant de la case (x,y)
-int Jeu::lireligne(int x, int y, int d1, int d2, int couleur){
+int Jeu::lireligne(int px, int py, int d1, int d2, int couleur){
+    /* gère les coups en bord de plateau */
+    if (px < 0 || px > LARGEUR_PLATEAU - 1) {
+        cerr << "Jeu::lireligne appellée avec paramètre x invalide" << endl;
+        return 0;
+    }
+    if (py < 0 || py > HAUTEUR_PLATEAU - 1) {
+        cerr << "Jeu::lireligne appellée avec paramètre y invalide" << endl;
+        return 0;
+    }
+
     int cpt=0;
-    int px=x;
-    int py=y;
-    cout<<px<<" - "<<py<<" ( "<<couleur<<" ) : "<<plateau[px][py]<<endl;
+    cout << "pos(x" << px << ",y" << py << "), coul(" << couleur << ") : " << plateau[px][py] << endl;
     while(plateau[px][py]==couleur){
         cpt++;
         px+=d1;
         py+=d2;
+
+        /* gère les coups en bord de plateau */
+        if (px < 0 || px > LARGEUR_PLATEAU -1) {
+            break;
+        }
+        if (py < 0 || py > HAUTEUR_PLATEAU -1) {
+            break;
+        }
     }
 
     return cpt;
@@ -128,12 +144,10 @@ void Jeu::regles(){
             if(i==0 && j==0){
                 continue;
             }
-            if(lireligne(dernierCoupX+i,
-                         dernierCoupY+j, i, j,
-                          joueurDernierCoup) +
-               lireligne(dernierCoupX-i,dernierCoupY-j, -1*i, -1*j, joueurDernierCoup)  >=4){
+            if(lireligne(dernierCoupX+i, dernierCoupY+j, i, j, joueurDernierCoup) +
+               lireligne(dernierCoupX-i, dernierCoupY-j, -1*i, -1*j, joueurDernierCoup)  >=4){
                 //VICTOIRE
-                cout<<"joueur "<<joueurDernierCoup<<"a gagné la partie"<<endl;
+                cout<<"joueur "<<joueurDernierCoup<<" a gagné la partie"<<endl;
                 joueurVictorieux=joueurDernierCoup;
             }
         }
