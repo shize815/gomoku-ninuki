@@ -1,0 +1,8 @@
+Pour ouvrir le projet simplement ouvrir le fichier .pro avec QtCreator.
+
+Attention, le package Qt Creator livr√©avec Ubuntu 13.10 ne marche pas
+avec gdb (cette version de Qt utilise python 2, le gdb qui tourne sous 13.10 supporte 
+uniquement python3). Du coup il faut imp√rativement installer la derni√re version
+de QtCreator en la t√l√chargeant en ligne pour pouvoir d√bugger correctement.
+
+

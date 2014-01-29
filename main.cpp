@@ -1,112 +1,66 @@
+#include <QApplication>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QFormLayout>
+#include <QGridLayout>
+#include <QLineEdit>
+#include <iostream>
 
-#include "./include/jeu.h"
-#include "./include/IA.h"
-#include <cstring>
+#include "mafenetre.h"
+#include "jeu.h"
+#include "joueur.h"
+#include "joueurhumainconsole.h"
+#include "joueurIA.h"
 
 using namespace std;
 
-void IAContreIA(){
-    Coup coup = {
-        .x = 0,
-        .y = 0,
-        .joueur = 1,
-    };
-    Jeu jeu;
-    IA ia1;
-    IA ia2;
-    ia1.setjeu(&jeu);
-    ia1.setJoueur(1);
+int main(int argc, char *argv[])
+{
+//    QApplication app(argc, argv);
 
-    ia2.setjeu(&jeu);
-    ia2.setJoueur(2);
+//    QWidget fenetre;
 
-    jeu.jouerCoup(coup); /* TODO pour l'instant on est obligÈ de jouer ce premier coup parce que l'IA
-                            ne peut que rÈponse ‡ un coup */
-    while(!jeu.fin()){
-        jeu.affiche();
-        ia1.repond();
+//    QLineEdit *nom = new QLineEdit;
+//    QLineEdit *prenom = new QLineEdit;
+//    QLineEdit *age = new QLineEdit;
 
-        jeu.affiche();
-        ia2.repond();
-    }
-    /* affiche le plateau victorieux */
-    jeu.affiche();
-}
+//    QFormLayout *layout = new QFormLayout;
+//    layout->addRow("votre &nom", nom);
+//    layout->addRow("voter &prenom", prenom);
+//    layout->addRow("votre &age", age);
 
-void joueurContreIA(){
-    Coup coup = {
-        .x = 0,
-        .y = 0,
-        .joueur = 1,
-    };
-    Jeu jeu;
-    IA ia;
-    ia.setjeu(&jeu);
-    ia.setJoueur(2);
+//    fenetre.setLayout(layout);
+//    fenetre.show();
 
-    while(!jeu.fin()){
-        jeu.affiche();
-        cout<<"coup joueur 1 :" << endl;
-        cout<<"            y :" << endl;
-        cin>>coup.y;
-        cout<<"            x :" << endl;
-        cin>>coup.x;
-        if (jeu.jouerCoup(coup) != SUCCES){
-            cerr << "coup invalide" << endl;
-            continue; /* fait rejouer joueur 1 */
-        }
-        jeu.affiche();
-        ia.repond();
-    }
-    /* affiche le plateau victorieux */
-    jeu.affiche();
-}
+    //return app.exec();
 
-void joueurContreJoueur(){
-    Coup coup = {
-        .x = 0,
-        .y = 0,
-        .joueur = 1,
-    };
-    Jeu jeu;
-
-    while(!jeu.fin()){
-        jeu.affiche();
-        cout<<"coup joueur " << coup.joueur << " :" <<endl;
-        cout<<"            y :" << endl;
-        cin>>coup.y;
-        cout<<"            x :" << endl;
-        cin>>coup.x;
-        if (jeu.jouerCoup(coup) != SUCCES){
-            //le joueur doit rejouer
-            cerr << "coup invalide" << endl;
-        } else {
-            coup.joueur = jeu.oppose(coup.joueur);
-        }
-    }
-    /* affiche le plateau victorieux */
-    jeu.affiche();
-}
-
-int main(){
     int nombreJoueurs = 0;
-    cout << "Nombre de joueurs humains (doit Ítre compris entre 0 et 2):" << endl;
+    cout << "Nombre de joueurs humains (doit √™tre compris entre 0 et 2):" << endl;
 
-    cin>>nombreJoueurs; /* TODO: sÈcuriser les saisies, au cas o˘ quelqu'un tape des lettres par exemple */
+    cin>>nombreJoueurs; /* TODO: s√©curiser les saisies, au cas o√π quelqu'un tape des lettres par exemple */
+    Jeu jeu;
     switch(nombreJoueurs) {
-        case 0:
-            IAContreIA();
-            break;
-        case 1:
-            joueurContreIA();
-            break;
-        case 2:
-            joueurContreJoueur();
-            break;
-        default:
-            cout << "nombre de joueurs invalide!" << endl;
-            break;
+    case 0: {
+        joueurIA joueur1;
+        joueurIA joueur2;
+        jeu.jouePartie(joueur1, joueur2);
+        break;
     }
-
-    return 0;
+    case 1: {
+        joueurHumainConsole joueur1;
+        joueurIA joueur2;
+        jeu.jouePartie(joueur1, joueur2);
+        break;
+    }
+    case 2: {
+        joueurHumainConsole joueur1;
+        joueurHumainConsole joueur2;
+        jeu.jouePartie(joueur1, joueur2);
+        break;
+    }
+    default:
+        cout << "nombre de joueurs invalide!" << endl;
+        break;
+    }
 }
