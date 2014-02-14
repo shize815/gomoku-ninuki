@@ -16,7 +16,7 @@ class Joueur : public QObject
         Joueur() = default;
         virtual ~Joueur() = default;
 
-        virtual void getCoup(Coup *coup) = 0; //renvoi un coup
+        virtual Coup getCoup() = 0; //renvoie un coup
 
         void setNumero(int numero) //configure le numéro du joueur incarné par le joueur (1 ou 2)
         {

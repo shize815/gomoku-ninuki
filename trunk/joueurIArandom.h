@@ -8,17 +8,15 @@
 #include <stdlib.h>
 
 
-class joueurIArandom : public Joueur
+class JoueurIaRandom : public Joueur
 {
     public:
-        joueurIArandom();
-        virtual ~joueurIArandom() = default;
-        void getCoup(Coup *coup); //renvoi un coup donné par l'IA.
+        JoueurIaRandom();
+        ~JoueurIaRandom() = default;
+        Coup getCoup(); //renvoie un coup donné par l'IA.
 
-
-    protected:
     private:
-        bool coupRand(Coup * coup); //joue coup aléatoire proche du dernier coup joué
+        Coup coupRand(); //renvoie coup aléatoire proche du dernier coup joué
 };
 
 #endif // IA_H
