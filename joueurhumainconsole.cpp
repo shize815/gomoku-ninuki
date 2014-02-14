@@ -8,8 +8,8 @@ using namespace std;
 void joueurHumainConsole::getCoup(Coup *coup)
 {
     coup->numeroJoueur = getNumero();
-
-    cout<<"coup joueur 1 :" << endl;
+		    
+		cout<<"coup joueur 1 :" << endl;
 
     cout<<"            y :" << endl;
     cin>>coup->y;
