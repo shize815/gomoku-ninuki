@@ -5,15 +5,18 @@
 
 using namespace std;
 
-void joueurHumainConsole::getCoup(Coup *coup)
+Coup joueurHumainConsole::getCoup()
 {
-    coup->numeroJoueur = getNumero();
+    Coup coup;
+    coup.numeroJoueur = m_numeroJoueur;
 		    
-		cout<<"coup joueur 1 :" << endl;
+    cout<<"coup joueur :" << m_numeroJoueur << endl;
 
     cout<<"            y :" << endl;
-    cin>>coup->y;
+    cin>>coup.y;
 
     cout<<"            x :" << endl;
-    cin>>coup->x;
+    cin>>coup.x;
+
+    return coup;
 }

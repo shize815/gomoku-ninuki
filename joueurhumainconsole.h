@@ -6,7 +6,7 @@
 class joueurHumainConsole : public Joueur
 {
 public:
-    void getCoup(Coup *coup);
+    Coup getCoup();
 };
 
 #endif // JOUEURHUMAIN_H

@@ -1,6 +1,5 @@
 SOURCES += \
     main.cpp \
-    mafenetre.cpp \
     jeu.cpp \
     joueurhumainconsole.cpp \
     joueurhumaingui.cpp \
@@ -12,7 +11,6 @@ SOURCES += \
     grillejeugraphique.cpp
 
 HEADERS += \
-    mafenetre.h \
     jeu.h \
     joueur.h \
     joueurhumainconsole.h \

@@ -4,12 +4,12 @@
 #include "joueur.h"
 
 //gui = Graphical User Interface (interface graphique)
-class joueurHumainGui : public Joueur
+class JoueurHumainGui : public Joueur
 {
     Q_OBJECT
 public:
-    joueurHumainGui() = default;
-    void getCoup(Coup *coup);
+    JoueurHumainGui() = default;
+    Coup getCoup();
 
 signals:
     void sigCoupClique(Coup coupClique);
@@ -19,6 +19,7 @@ public slots:
 private:
     //variable écrite par le slot pionCliqué et lue dans la fonction getCoup.
     Coup m_coupClique;
+    bool m_coupValide;
 };
 
 #endif // JOUEURHUMAINGUI_H

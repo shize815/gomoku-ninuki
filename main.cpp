@@ -6,13 +6,11 @@
 #include <QGridLayout>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QMainWindow>
 
 #include <memory>
 #include <vector>
 #include <iostream>
 
-#include "mafenetre.h"
 #include "jeu.h"
 #include "grillejeugraphique.h"
 #include "joueur.h"
@@ -26,8 +24,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    //QWidget *fenetre1 = new QWidget();
-    QMainWindow *fenetre1 = new QMainWindow();
+    QWidget *fenetre1 = new QWidget();
 
     QGridLayout *layout = new QGridLayout();
     GrilleJeuGraphique *grille = new GrilleJeuGraphique(15, 15, fenetre1);
@@ -45,15 +42,15 @@ int main(int argc, char *argv[])
 
     switch(nombreJoueurs) {
     case 0: {
-        joueurIArandom joueur1;
-        joueurIArandom joueur2;
+        JoueurIaRandom joueur1;
+        JoueurIaRandom joueur2;
         Jeu jeu(*grille, joueur1, joueur2);
         QObject::connect(bouton, SIGNAL(clicked()), &jeu, SLOT(jouePartie()) );
         return app.exec();
     }
     case 1: {
-        joueurHumainGui joueur1;
-        joueurIArandom joueur2;
+        JoueurHumainGui joueur1;
+        JoueurIaRandom joueur2;
         Jeu jeu(*grille, joueur1, joueur2);
         QObject::connect(bouton, SIGNAL(clicked()), &jeu, SLOT(jouePartie()) );
         return app.exec();

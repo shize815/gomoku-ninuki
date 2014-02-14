@@ -36,11 +36,10 @@ void Jeu::getCoupEtJoue(Joueur &joueur)
 {
     Resultat res = SUCCES;
     do {
-        Coup coup;
-        joueur.getCoup(&coup);
+        Coup coup = joueur.getCoup();
         res = jouerCoup(coup);
         if (res != SUCCES) {
-            cerr << "coup invalide! R�essayez:" << endl;
+            cerr << "coup invalide! Réessayez:" << endl;
         }
     } while (res != SUCCES);
 }
