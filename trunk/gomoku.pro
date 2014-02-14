@@ -4,8 +4,12 @@ SOURCES += \
     jeu.cpp \
     joueurhumainconsole.cpp \
     joueurhumaingui.cpp \
-    joueur.cpp \
-    joueurIA.cpp
+    pion.cpp \
+    joueurIArandom.cpp \
+    joueuriaintelligent.cpp \
+    grillejeuconsole.cpp \
+    widgetgrillejeu.cpp \
+    grillejeugraphique.cpp
 
 HEADERS += \
     mafenetre.h \
@@ -14,6 +18,15 @@ HEADERS += \
     joueurhumainconsole.h \
     joueurhumaingui.h \
     coup.h \
-    joueurIA.h
+    pion.h \
+    joueurIArandom.h \
+    joueuriaintelligent.h \
+    grillejeu.h \
+    grillejeuconsole.h \
+    widgetgrillejeu.h \
+    grillejeugraphique.h
 
 QT += widgets
+QT += gui
+
+CONFIG += c++11

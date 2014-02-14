@@ -5,62 +5,69 @@
 #include <QFormLayout>
 #include <QGridLayout>
 #include <QLineEdit>
+#include <QPushButton>
+#include <QMainWindow>
+
+#include <memory>
+#include <vector>
 #include <iostream>
 
 #include "mafenetre.h"
 #include "jeu.h"
+#include "grillejeugraphique.h"
 #include "joueur.h"
 #include "joueurhumainconsole.h"
-#include "joueurIA.h"
+#include "joueurhumaingui.h"
+#include "joueurIArandom.h"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-//    QApplication app(argc, argv);
+    QApplication app(argc, argv);
 
-//    QWidget fenetre;
+    //QWidget *fenetre1 = new QWidget();
+    QMainWindow *fenetre1 = new QMainWindow();
 
-//    QLineEdit *nom = new QLineEdit;
-//    QLineEdit *prenom = new QLineEdit;
-//    QLineEdit *age = new QLineEdit;
+    QGridLayout *layout = new QGridLayout();
+    GrilleJeuGraphique *grille = new GrilleJeuGraphique(15, 15, fenetre1);
+    QPushButton *bouton = new QPushButton("Nouveau Jeu", fenetre1);
+    layout->addWidget(grille->getWidgetGrilleJeu(), 0, 0);
+    layout->addWidget(bouton, 1, 0);
+    fenetre1->setLayout(layout);
 
-//    QFormLayout *layout = new QFormLayout;
-//    layout->addRow("votre &nom", nom);
-//    layout->addRow("voter &prenom", prenom);
-//    layout->addRow("votre &age", age);
+    fenetre1->show();
 
-//    fenetre.setLayout(layout);
-//    fenetre.show();
+    int nombreJoueurs = 1;
+    //cout << "Nombre de joueurs humains (doit être compris entre 0 et 2):" << endl;
 
-    //return app.exec();
+    //cin>>nombreJoueurs; /* TODO: sécuriser les saisies, au cas où quelqu'un tape des lettres par exemple */
 
-    int nombreJoueurs = 0;
-    cout << "Nombre de joueurs humains (doit être compris entre 0 et 2):" << endl;
-
-    cin>>nombreJoueurs; /* TODO: sécuriser les saisies, au cas où quelqu'un tape des lettres par exemple */
-    Jeu jeu;
     switch(nombreJoueurs) {
     case 0: {
-        joueurIA joueur1;
-        joueurIA joueur2;
-        jeu.jouePartie(joueur1, joueur2);
-        break;
+        joueurIArandom joueur1;
+        joueurIArandom joueur2;
+        Jeu jeu(*grille, joueur1, joueur2);
+        QObject::connect(bouton, SIGNAL(clicked()), &jeu, SLOT(jouePartie()) );
+        return app.exec();
     }
     case 1: {
-        joueurHumainConsole joueur1;
-        joueurIA joueur2;
-        jeu.jouePartie(joueur1, joueur2);
-        break;
+        joueurHumainGui joueur1;
+        joueurIArandom joueur2;
+        Jeu jeu(*grille, joueur1, joueur2);
+        QObject::connect(bouton, SIGNAL(clicked()), &jeu, SLOT(jouePartie()) );
+        return app.exec();
     }
     case 2: {
         joueurHumainConsole joueur1;
         joueurHumainConsole joueur2;
-        jeu.jouePartie(joueur1, joueur2);
-        break;
+        Jeu jeu(*grille, joueur1, joueur2);
+        QObject::connect(bouton, SIGNAL(clicked()), &jeu, SLOT(jouePartie()) );
+        return app.exec();
     }
     default:
         cout << "nombre de joueurs invalide!" << endl;
         break;
     }
+    return 0;
 }
