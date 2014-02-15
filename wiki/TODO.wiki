@@ -6,7 +6,7 @@ Fait à priori, mais à tester.
 = Interface graphique=
 
 
- * Une jolie interface clicable.
+ * Une jolie interface cliquable. -> Fait
  * Une interaction avec l'IA
  * Une capacité à utiliser le protocole GTP
 
