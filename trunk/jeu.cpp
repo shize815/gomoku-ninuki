@@ -46,10 +46,10 @@ void Jeu::getCoupEtJoue(Joueur &joueur)
 
 void Jeu::jouePartie()
 {
-
     while(!fin()){
         m_grilleJeu.affiche(m_plateau, m_joueurVictorieux);
         getCoupEtJoue(m_joueur1);
+        m_grilleJeu.affiche(m_plateau, m_joueurVictorieux);
         getCoupEtJoue(m_joueur2);
     }
     /* affiche le plateau victorieux */
@@ -84,7 +84,11 @@ bool Jeu::fin(){
 }
 
 // renvoye le nombre de pions de la couleur donn�e align�s dans la direction (d1,d2) en partant de la case (x,y)
-int Jeu::lireligne(int px, int py, int d1, int d2, int couleur){
+int Jeu::lireligne(int px,
+                   int py,
+                   int dx, /* +1, -1 ou 0 */
+                   int dy,/* +1, -1 ou 0*/
+                   int couleur /* 1 ou 2 */){
     if (px < 0 || px > LARGEUR_PLATEAU - 1) {
         cerr << "Jeu::lireligne appell�e avec param�tre x invalide" << endl;
         return 0;
@@ -98,8 +102,8 @@ int Jeu::lireligne(int px, int py, int d1, int d2, int couleur){
     //cout << "pos(x" << px << ",y" << py << "), coul(" << couleur << ") : " << m_plateau[px][py] << endl;
     while(m_plateau[px][py]==couleur){
         cpt++;
-        px+=d1;
-        py+=d2;
+        px+=dx;
+        py+=dy;
 
         /* g�re les coups en bord de plateau */
         if (px < 0 || px > LARGEUR_PLATEAU -1) {
