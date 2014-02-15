@@ -21,13 +21,13 @@ class Jeu : public QObject
 {
     Q_OBJECT
     public:
-        const int HAUTEUR_PLATEAU = 15;
-        const int LARGEUR_PLATEAU = 15;
+        static const int HAUTEUR_PLATEAU = 15;
+        static const int LARGEUR_PLATEAU = 15;
 
         Jeu(GrilleJeu &grilleJeu, Joueur &joueur1, Joueur &joueur2);
         ~Jeu() = default;
 
-        int oppose(int couleur); //retourne la couleur inverse à la couleur entrée
+
 
 
 
@@ -49,13 +49,13 @@ class Jeu : public QObject
         void jouePartie(); //joue une partie
 
     private:
-
+        int oppose(int couleur); //retourne la couleur inverse à la couleur entrée
         Resultat jouerCoup(Coup coup);
         void regles(); //Applique les règles du jeu.
         bool fin(); //renvoie vrai si la partie est finie.
 
         //renvoie le nombre de pions de la couleur donné aligné dans la direction (d1,d2) en partant de la case (x,y)
-        int lireligne(int x, int y, int d1, int d2, int couleur);
+        int lireligne(int px, int py, int dx, int dy, int couleur);
         void getCoupEtJoue(Joueur &joueur);
         std::vector<Coup> coupsJoues;
 

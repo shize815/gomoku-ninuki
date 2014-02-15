@@ -6,13 +6,17 @@
 #include <QGridLayout>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QRadioButton>
+#include <QLabel>
 
 #include <memory>
 #include <vector>
 #include <iostream>
 
 #include "jeu.h"
+#include "fenetreprincipale.h"
 #include "grillejeugraphique.h"
+#include "grillejeuconsole.h"
 #include "joueur.h"
 #include "joueurhumainconsole.h"
 #include "joueurhumaingui.h"
@@ -20,51 +24,65 @@
 
 using namespace std;
 
-int main(int argc, char *argv[])
+
+
+//Le programme doit être recompilé SANS l'option "Run in Terminal" dans QtCreator->Projects->Run
+//Sinon le programme GUI ne marche pas.
+int mainGui(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    QWidget *fenetre1 = new QWidget();
+    FenetrePrincipale *fenetre = new FenetrePrincipale();
 
-    QGridLayout *layout = new QGridLayout();
-    GrilleJeuGraphique *grille = new GrilleJeuGraphique(15, 15, fenetre1);
-    QPushButton *bouton = new QPushButton("Nouveau Jeu", fenetre1);
-    layout->addWidget(grille->getWidgetGrilleJeu(), 0, 0);
-    layout->addWidget(bouton, 1, 0);
-    fenetre1->setLayout(layout);
 
-    fenetre1->show();
 
+    return app.exec();
+}
+
+//Le programme doit être recompilé AVEC l'option "Run in Terminal" dans QtCreator->Projects->Run
+//Sinon le programme console ne marche pas.
+int mainConsole()
+{
     int nombreJoueurs = 1;
-    //cout << "Nombre de joueurs humains (doit être compris entre 0 et 2):" << endl;
+    cout << "Nombre de joueurs humains (doit être compris entre 0 et 2):" << endl;
 
-    //cin>>nombreJoueurs; /* TODO: sécuriser les saisies, au cas où quelqu'un tape des lettres par exemple */
-
+    cin>>nombreJoueurs; /* TODO: sécuriser les saisies, au cas où quelqu'un tape des lettres par exemple */
+    GrilleJeuConsole grille(Jeu::LARGEUR_PLATEAU, Jeu::HAUTEUR_PLATEAU);
     switch(nombreJoueurs) {
     case 0: {
         JoueurIaRandom joueur1;
         JoueurIaRandom joueur2;
-        Jeu jeu(*grille, joueur1, joueur2);
-        QObject::connect(bouton, SIGNAL(clicked()), &jeu, SLOT(jouePartie()) );
-        return app.exec();
+        Jeu jeu(grille, joueur1, joueur2);
+        jeu.jouePartie();
+        break;
     }
     case 1: {
-        JoueurHumainGui joueur1;
+        JoueurHumainConsole joueur1;
         JoueurIaRandom joueur2;
-        Jeu jeu(*grille, joueur1, joueur2);
-        QObject::connect(bouton, SIGNAL(clicked()), &jeu, SLOT(jouePartie()) );
-        return app.exec();
+        Jeu jeu(grille, joueur1, joueur2);
+        jeu.jouePartie();
+        break;
     }
     case 2: {
-        joueurHumainConsole joueur1;
-        joueurHumainConsole joueur2;
-        Jeu jeu(*grille, joueur1, joueur2);
-        QObject::connect(bouton, SIGNAL(clicked()), &jeu, SLOT(jouePartie()) );
-        return app.exec();
+        JoueurHumainConsole joueur1;
+        JoueurHumainConsole joueur2;
+        Jeu jeu(grille, joueur1, joueur2);
+        jeu.jouePartie();
+        break;
     }
     default:
         cout << "nombre de joueurs invalide!" << endl;
         break;
     }
+    return 0;
+}
+
+int main(int argc, char *argv[])
+{
+    //Pour lancer le jeu en mode console, le programme doit être recompilé avec ou sans l'option "run in terminal" dans QtCreator.
+
+    mainGui(argc, argv);
+    //mainConsole();
+
     return 0;
 }

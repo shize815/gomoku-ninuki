@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Coup joueurHumainConsole::getCoup()
+Coup JoueurHumainConsole::getCoup()
 {
     Coup coup;
     coup.numeroJoueur = m_numeroJoueur;

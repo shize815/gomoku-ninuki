@@ -20,6 +20,7 @@ Coup JoueurIaRandom::coupRand()
         coup.x = 1;
         coup.y = 1;
         coup.numeroJoueur = m_numeroJoueur;
+        return coup;
     }
 
     int cx=m_jeu->getcoupsJoues().back().x;

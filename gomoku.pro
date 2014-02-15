@@ -8,7 +8,9 @@ SOURCES += \
     joueuriaintelligent.cpp \
     grillejeuconsole.cpp \
     widgetgrillejeu.cpp \
-    grillejeugraphique.cpp
+    grillejeugraphique.cpp \
+    fenetreprincipale.cpp \
+    choixtypejoueur.cpp
 
 HEADERS += \
     jeu.h \
@@ -22,7 +24,9 @@ HEADERS += \
     grillejeu.h \
     grillejeuconsole.h \
     widgetgrillejeu.h \
-    grillejeugraphique.h
+    grillejeugraphique.h \
+    fenetreprincipale.h \
+    choixtypejoueur.h
 
 QT += widgets
 QT += gui

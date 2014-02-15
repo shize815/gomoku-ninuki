@@ -3,7 +3,7 @@
 
 #include "joueur.h"
 
-class joueurHumainConsole : public Joueur
+class JoueurHumainConsole : public Joueur
 {
 public:
     Coup getCoup();
