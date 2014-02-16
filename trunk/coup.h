@@ -1,10 +1,13 @@
 #ifndef COUP_H
 #define COUP_H
 
-struct Coup{
+#include "couleurpion.h"
+
+struct Coup
+{
     int x;
     int y;
-    int numeroJoueur;
+    CouleurPion couleur;
 };
 
 #endif // COUP_H

@@ -15,11 +15,11 @@ JoueurIaRandom::JoueurIaRandom()
 Coup JoueurIaRandom::coupRand()
 {
     Coup coup;
-    coup.numeroJoueur=m_numeroJoueur;
+    coup.couleur=m_couleurPion;
     if (m_jeu->getcoupsJoues().size() == 0) {
         coup.x = 1;
         coup.y = 1;
-        coup.numeroJoueur = m_numeroJoueur;
+        coup.couleur = m_couleurPion;
         return coup;
     }
 
@@ -41,11 +41,11 @@ Coup JoueurIaRandom::coupRand()
         if(cy>m_jeu->HAUTEUR_PLATEAU - 1){
             cy=m_jeu->HAUTEUR_PLATEAU - 1;
         }
-    }while(m_jeu->getplateau(cx,cy)!=0);
+    }while(m_jeu->getplateau(cx,cy)!=CouleurPion::aucuneCouleur);
 
     coup.x=cx;
     coup.y=cy;
-    coup.numeroJoueur = m_numeroJoueur;
+    coup.couleur = m_couleurPion;
     return coup;
 }
 
@@ -54,7 +54,7 @@ Coup JoueurIaRandom::getCoup()
 {
     Coup coup = coupRand();
     
-    cout << "l'IA joue x " << coup.x << ",y " << coup.y << " (joueur" << coup.numeroJoueur << ")" << endl;
+    cout << "l'IA joue x " << coup.x << ",y " << coup.y << " (joueur" << coup.couleur << ")" << endl;
     return coup;
 }
 

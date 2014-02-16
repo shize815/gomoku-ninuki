@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QObject>
 
+#include "couleurpion.h"
 #include "coup.h"
 #include "joueur.h"
 #include "grillejeu.h"
@@ -25,22 +26,16 @@ class Jeu : public QObject
         static const int LARGEUR_PLATEAU = 15;
 
         Jeu(GrilleJeu &grilleJeu, Joueur &joueur1, Joueur &joueur2);
-        ~Jeu() = default;
-
-
-
-
-
 
         //ACCESSEURS :
-        int getp1();
-        int getp2();
-        int getplateau(int x, int y);
+        int getPrisonniersJ1();
+        int getPrisonniersJ2();
+        CouleurPion getplateau(int x, int y);
         std::vector<Coup> &getcoupsJoues();
 
     signals:
-        void joueur1PionClique(Coup coupClique);
-        void joueur2PionClique(Coup coupClique);
+        void joueurNoirPionClique(Coup coupClique);
+        void joueurBlancPionClique(Coup coupClique);
 
     public slots:
         //détermine à quel joueur c'est le tour de jouer et envoye un signal avec les coordonnées du pion cliqué
@@ -49,19 +44,18 @@ class Jeu : public QObject
         void jouePartie(); //joue une partie
 
     private:
-        int oppose(int couleur); //retourne la couleur inverse à la couleur entrée
+        CouleurPion oppose(CouleurPion couleur); //retourne la couleur inverse à la couleur entrée
         Resultat jouerCoup(Coup coup);
         void regles(); //Applique les règles du jeu.
         bool fin(); //renvoie vrai si la partie est finie.
 
         //renvoie le nombre de pions de la couleur donné aligné dans la direction (d1,d2) en partant de la case (x,y)
-        int lireligne(int px, int py, int dx, int dy, int couleur);
+        int lireligne(int px, int py, int dx, int dy, CouleurPion couleur);
         void getCoupEtJoue(Joueur &joueur);
         std::vector<Coup> coupsJoues;
 
         //contient la position des pions sur le plateau
-        //chaque case contient soit 0(pas de pion), 1 (joueur1), ou 2 (joueur2)
-        std::vector < std::vector <int> > m_plateau;
+        std::vector < std::vector <CouleurPion> > m_plateau;
 
         //vue du jeu (graphique ou console)
         GrilleJeu &m_grilleJeu;
@@ -69,9 +63,9 @@ class Jeu : public QObject
         Joueur &m_joueur1;
         Joueur &m_joueur2;
 
-        int p1; //prisonniers du j1
-        int p2;
-        int m_joueurVictorieux; //0 si la partie est en cours, sinon le numero de vainqueur.
+        int m_prisonniersJoueurNoir;
+        int m_prisonniersJoueurBlanc;
+        CouleurPion m_joueurVictorieux; //0 si la partie est en cours, sinon le numero de vainqueur.
 };
 
 #endif // JEU_H

@@ -26,18 +26,17 @@ public slots:
     void boutonNouveauJeuClique();
 
 private:
-    std::unique_ptr<Jeu> jeu;
-    std::unique_ptr<Joueur> joueur1;
-    std::unique_ptr<Joueur> joueur2;
+    std::unique_ptr<Jeu> m_jeu;
+    std::unique_ptr<Joueur> m_joueur1;
+    std::unique_ptr<Joueur> m_joueur2;
 
-    GrilleJeuGraphique *grille;
-    QPushButton *boutonNouveauJeu;
+    GrilleJeuGraphique m_grille;
+    QPushButton m_boutonNouveauJeu;
 
-    ChoixTypeJoueur *m_choixTypeJoueur1;
-    ChoixTypeJoueur *m_choixTypeJoueur2;
+    ChoixTypeJoueur m_choixTypeJoueur1;
+    ChoixTypeJoueur m_choixTypeJoueur2;
 
-    void initTypeJoueur(std::unique_ptr<Joueur> &joueur);
-
+    QGridLayout layoutPrincipal;
 };
 
 #endif // FENETREPRINCIPALE_H

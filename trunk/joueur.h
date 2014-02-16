@@ -13,20 +13,22 @@ class Joueur : public QObject
 {
     Q_OBJECT
     public:
+
+
         Joueur() = default;
         virtual ~Joueur() = default;
 
         virtual Coup getCoup() = 0; //renvoie un coup
 
-        void setNumero(int numero) //configure le numéro du joueur incarné par le joueur (1 ou 2)
+        void setCouleur(CouleurPion couleur) //configure le numéro du joueur incarné par le joueur (1 ou 2)
         {
-            if (numero != 1 && numero != 2) {
-                std::cerr << "Joueur::setNumero, numero invalide!" << std::endl;
+            if (couleur == CouleurPion::aucuneCouleur) {
+                std::cerr << "couleur invalide!" << std::endl;
             }
-            m_numeroJoueur = numero;
+            m_couleurPion = couleur;
         }
 
-        int getNumero() { return m_numeroJoueur; }
+        CouleurPion getCouleur() { return m_couleurPion; }
         void setjeu(Jeu * jeu) { m_jeu = jeu; }
 
     public slots:
@@ -37,7 +39,7 @@ class Joueur : public QObject
 
     protected:
         Jeu * m_jeu;
-        int m_numeroJoueur;
+        CouleurPion m_couleurPion;
 };
 
 #endif // JOUEUR_H

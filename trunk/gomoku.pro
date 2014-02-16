@@ -26,7 +26,8 @@ HEADERS += \
     widgetgrillejeu.h \
     grillejeugraphique.h \
     fenetreprincipale.h \
-    choixtypejoueur.h
+    choixtypejoueur.h \
+    couleurpion.h
 
 QT += widgets
 QT += gui

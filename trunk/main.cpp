@@ -32,9 +32,8 @@ int mainGui(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    FenetrePrincipale *fenetre = new FenetrePrincipale();
-
-
+    FenetrePrincipale fenetre;
+    fenetre.show();
 
     return app.exec();
 }

@@ -9,9 +9,9 @@ GrilleJeuConsole::GrilleJeuConsole(int largeur, int hauteur) :
 {
 }
 
-void GrilleJeuConsole::affiche(std::vector < std::vector <int> > &plateau, int joueurVictorieux)
+void GrilleJeuConsole::affiche(std::vector < std::vector <CouleurPion> > &plateau, CouleurPion joueurVictorieux)
 {
-    //numï¿½ros des colonnes affichï¿½s en haut
+    //numéros des colonnes affichées en haut
     cout <<"   ";
     for (int x=0; x<m_largeur; x++){
         if (x<10){
@@ -32,20 +32,20 @@ void GrilleJeuConsole::affiche(std::vector < std::vector <int> > &plateau, int j
 
         for(int x=0; x<m_largeur; x++){
 
-            if(plateau[x][y]==0){
+            if(plateau[x][y]== CouleurPion::aucuneCouleur){
                 cout<<".  ";
             }
-            else if(plateau[x][y]==1){
+            else if(plateau[x][y]==CouleurPion::noir){
                 cout<<"O  ";
             }
-            else if(plateau[x][y]==2){
+            else if(plateau[x][y]==CouleurPion::noir){
                 cout<<"X  ";
             }
         }
         cout<<endl;
     }
 
-    if(joueurVictorieux!=0){
+    if(joueurVictorieux!=CouleurPion::aucuneCouleur){
         cout<<"joueur "<<joueurVictorieux<<" a gagnï¿½"<<endl;
     }
 }

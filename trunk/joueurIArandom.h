@@ -12,8 +12,8 @@ class JoueurIaRandom : public Joueur
 {
     public:
         JoueurIaRandom();
-        ~JoueurIaRandom() = default;
-        Coup getCoup(); //renvoie un coup donné par l'IA.
+
+        Coup getCoup() override; //renvoie un coup donné par l'IA.
 
     private:
         Coup coupRand(); //renvoie coup aléatoire proche du dernier coup joué

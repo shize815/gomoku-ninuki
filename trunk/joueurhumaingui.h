@@ -9,7 +9,7 @@ class JoueurHumainGui : public Joueur
     Q_OBJECT
 public:
     JoueurHumainGui() = default;
-    Coup getCoup();
+    Coup getCoup() override;
 
 signals:
     void sigCoupClique(Coup coupClique);

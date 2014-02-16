@@ -1,6 +1,8 @@
 #ifndef GRILLEJEU_H
 #define GRILLEJEU_H
 
+#include "couleurpion.h"
+
 #include <vector>
 #include <QObject>
 
@@ -16,7 +18,7 @@ public:
     GrilleJeu() = default;
     virtual ~GrilleJeu() = default;
 
-    virtual void affiche(std::vector < std::vector <int> > &plateau, int joueurVictorieux) = 0; //Affiche le plateau
+    virtual void affiche(std::vector < std::vector <CouleurPion> > &plateau, CouleurPion joueurVictorieux) = 0; //Affiche le plateau
 
 signals:
     void sigPionClique(int xNumero, int yNumero);

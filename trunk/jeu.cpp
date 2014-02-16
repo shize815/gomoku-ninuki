@@ -15,17 +15,17 @@ Jeu::Jeu(GrilleJeu &grilleJeu, Joueur &joueur1, Joueur &joueur2) :
     }
     for(int x=0; x<LARGEUR_PLATEAU; x++){
         for(int y=0; y<HAUTEUR_PLATEAU; y++){
-            m_plateau[x][y]=0;
+            m_plateau[x][y]=CouleurPion::aucuneCouleur;
         }
     }
-    m_joueurVictorieux=0;
+    m_joueurVictorieux=CouleurPion::aucuneCouleur;
     QObject::connect(&m_grilleJeu, SIGNAL(sigPionClique(int, int)), this, SLOT(slotPionClique(int, int) ) );
 
-    QObject::connect(this, SIGNAL(joueur1PionClique(Coup)), &m_joueur1, SLOT(slotCoupClique(Coup) ) );
-    QObject::connect(this, SIGNAL(joueur2PionClique(Coup)), &m_joueur2, SLOT(slotCoupClique(Coup) ) );
+    QObject::connect(this, SIGNAL(joueurNoirPionClique(Coup)), &m_joueur1, SLOT(slotCoupClique(Coup) ) );
+    QObject::connect(this, SIGNAL(joueurBlancPionClique(Coup)), &m_joueur2, SLOT(slotCoupClique(Coup) ) );
 
-    m_joueur1.setNumero(1);
-    m_joueur2.setNumero(2);
+    m_joueur1.setCouleur(CouleurPion::noir);
+    m_joueur2.setCouleur(CouleurPion::blanc);
 
     m_joueur1.setjeu(this);
     m_joueur2.setjeu(this);
@@ -34,14 +34,16 @@ Jeu::Jeu(GrilleJeu &grilleJeu, Joueur &joueur1, Joueur &joueur2) :
 
 void Jeu::getCoupEtJoue(Joueur &joueur)
 {
-    Resultat res = SUCCES;
-    do {
+    while (1) {
         Coup coup = joueur.getCoup();
-        res = jouerCoup(coup);
-        if (res != SUCCES) {
+
+        if (jouerCoup(coup) == INVALIDE) {
             cerr << "coup invalide! Réessayez:" << endl;
         }
-    } while (res != SUCCES);
+        else {
+            break;
+        }
+    }
 }
 
 void Jeu::jouePartie()
@@ -65,47 +67,47 @@ Resultat Jeu::jouerCoup(Coup coup){
     if (coup.x < 0 || coup.y < 0) {
         return INVALIDE;
     }
-    if (m_plateau[coup.x][coup.y] != 0) {
+    if (m_plateau[coup.x][coup.y] != CouleurPion::aucuneCouleur) {
         return INVALIDE;
     }
 
-    m_plateau[coup.x][coup.y]=coup.numeroJoueur;
+    m_plateau[coup.x][coup.y]=coup.couleur;
     coupsJoues.push_back(coup);
     regles();
     return SUCCES;
 }
 
 bool Jeu::fin(){
-    if(m_joueurVictorieux==0){
+    if(m_joueurVictorieux==CouleurPion::aucuneCouleur){
         return false;
     } else {
         return true;
     }
 }
 
-// renvoye le nombre de pions de la couleur donn�e align�s dans la direction (d1,d2) en partant de la case (x,y)
+// renvoye le nombre de pions de la couleur donnée alignés dans la direction (d1,d2) en partant de la case (x,y)
 int Jeu::lireligne(int px,
                    int py,
                    int dx, /* +1, -1 ou 0 */
                    int dy,/* +1, -1 ou 0*/
-                   int couleur /* 1 ou 2 */){
+                   CouleurPion couleur /* 1 ou 2 */){
     if (px < 0 || px > LARGEUR_PLATEAU - 1) {
-        cerr << "Jeu::lireligne appell�e avec param�tre x invalide" << endl;
+        cerr << "Jeu::lireligne appellée avec paramètre x invalide" << endl;
         return 0;
     }
     if (py < 0 || py > HAUTEUR_PLATEAU - 1) {
-        cerr << "Jeu::lireligne appell�e avec param�tre y invalide" << endl;
+        cerr << "Jeu::lireligne appellée avec paramètre y invalide" << endl;
         return 0;
     }
 
     int cpt=0;
-    //cout << "pos(x" << px << ",y" << py << "), coul(" << couleur << ") : " << m_plateau[px][py] << endl;
+
     while(m_plateau[px][py]==couleur){
         cpt++;
         px+=dx;
         py+=dy;
 
-        /* g�re les coups en bord de plateau */
+        /* gère les coups en bord de plateau */
         if (px < 0 || px > LARGEUR_PLATEAU -1) {
             break;
         }
@@ -117,27 +119,31 @@ int Jeu::lireligne(int px,
     return cpt;
 }
 
-int Jeu::oppose(int couleur){
-    if(couleur==2){
-        return 1;
+CouleurPion Jeu::oppose(CouleurPion couleur){
+    if(couleur==CouleurPion::blanc){
+        return CouleurPion::noir;
     }
-    if(couleur==1){
-        return 2;
+    else if (couleur==CouleurPion::noir){
+        return CouleurPion::blanc;
     }
-    return 0;
+    else {
+        cerr << "couleur invalide";
+        return CouleurPion::aucuneCouleur;
+    }
 }
 
 void Jeu::regles(){
     if (coupsJoues.size() == 0){
-        std::cerr << "coups joués vide!";
+        cerr << "coups joués vide!";
+        return;
     }
     Coup dernierCoupJoue = coupsJoues.back();
 
     int dernierCoupX = dernierCoupJoue.x;
     int dernierCoupY = dernierCoupJoue.y;
-    int joueurDernierCoup = dernierCoupJoue.numeroJoueur;
+    CouleurPion joueurDernierCoup = dernierCoupJoue.couleur;
 
-    // d�termine si 5 pierres sont align�es
+    // détermine si 5 pierres sont alignées
     for(int i=-1; i<=1; i++){
         for(int j=-1; j<=1; j++){
             if(i==0 && j==0){
@@ -146,13 +152,13 @@ void Jeu::regles(){
             if(lireligne(dernierCoupX+i, dernierCoupY+j, i, j, joueurDernierCoup) +
                lireligne(dernierCoupX-i, dernierCoupY-j, -1*i, -1*j, joueurDernierCoup)  >=4){
                 //VICTOIRE
-                cout<<"joueur "<<joueurDernierCoup<<" a gagn� la partie"<<endl;
+                cout<<"joueur "<<joueurDernierCoup<<" a gagné la partie (5 pierres)"<<endl;
                 m_joueurVictorieux=joueurDernierCoup;
             }
         }
     }
 
-    //mange pions si n�cessaire
+    //mange pions si nécessaire
     for(int i=-1; i<=1; i++){
         for(int j=-1; j<=1; j++){
             if(i==0 && j==0){
@@ -160,30 +166,38 @@ void Jeu::regles(){
             }
             //cout<<"nb l : "<<i<<j<<" : "<<lireligne(cx+i,cy+j, i, j, oppose(joueurDernierCoup))<<endl;
             if(lireligne(dernierCoupX+i,dernierCoupY+j, i, j, oppose(joueurDernierCoup))==2){
-                //ON MANGE
+                if (dernierCoupX +3*i < 0 ||
+                    dernierCoupX+3*i > LARGEUR_PLATEAU - 1 ||
+                    dernierCoupY+3*j < 0 ||
+                    dernierCoupY+3*j > LARGEUR_PLATEAU - 1) {
+                    //en partant du bord du plateau, il y a deux pierres d'une couleur puis une troisième de l'autre couleur
+                    //il n'y a pas de point à manger.
+                    continue;
+                }
                 if(m_plateau[dernierCoupX+3*i][dernierCoupY+3*j]==joueurDernierCoup){
-                    cout<<"mang�!"<<endl;
-                    m_plateau[dernierCoupX+i][dernierCoupY+j]=0;
-                    m_plateau[dernierCoupX+2*i][dernierCoupY+2*j]=0;
-                    if(joueurDernierCoup==1){
-                        p1+=2;
+                    //ON MANGE
+                    cout<<"mangé!"<<endl;
+                    m_plateau[dernierCoupX+i][dernierCoupY+j]=CouleurPion::aucuneCouleur;
+                    m_plateau[dernierCoupX+2*i][dernierCoupY+2*j]=CouleurPion::aucuneCouleur;
+                    if(joueurDernierCoup==CouleurPion::noir){
+                        m_prisonniersJoueurNoir+=2;
                     } else {
-                        p2+=2;
+                        m_prisonniersJoueurBlanc+=2;
                     }
-                    if(p1==10){
+                    if(m_prisonniersJoueurNoir==10){
                         cout<<"JOUEUR 1 A GAGNE avec 10 prisonniers"<<endl;
-                        m_joueurVictorieux=1;
+                        m_joueurVictorieux=CouleurPion::noir;
                     }
-                    if(p2==10){
+                    if(m_prisonniersJoueurBlanc==10){
                         cout<<"JOUEUR 2 A GAGNE avec 10 prisonniers"<<endl;
-                        m_joueurVictorieux=2;
+                        m_joueurVictorieux=CouleurPion::blanc;
                     }
                 }
             }
         }
     }
-    if(m_joueurVictorieux!=0){
-        cout<<"joueur "<<m_joueurVictorieux<<" a gagn�"<<endl;
+    if(m_joueurVictorieux!=CouleurPion::aucuneCouleur){
+        cout<<"joueur "<<m_joueurVictorieux<<" a gagné"<<endl;
     }
 }
 
@@ -193,36 +207,36 @@ void Jeu::slotPionClique(int xNumero, int yNumero)
     coupClique.x = xNumero;
     coupClique.y = yNumero;
     if (coupsJoues.size() == 0) {
-        //joueur1 commence la partie
-        coupClique.numeroJoueur = 1;
-        emit joueur1PionClique(coupClique);
+        //joueur noir commence la partie
+        coupClique.couleur = CouleurPion::noir;
+        emit joueurNoirPionClique(coupClique);
         return;
     }
 
     Coup dernierCoupJoue = coupsJoues.back();
 
-    if (dernierCoupJoue.numeroJoueur == 1){
-        coupClique.numeroJoueur = 2;
-        emit joueur2PionClique(coupClique);
+    if (dernierCoupJoue.couleur == CouleurPion::noir){
+        coupClique.couleur = CouleurPion::blanc;
+        emit joueurBlancPionClique(coupClique);
     }
     else{
-        coupClique.numeroJoueur = 1;
-        emit joueur1PionClique(coupClique);
+        coupClique.couleur = CouleurPion::noir;
+        emit joueurNoirPionClique(coupClique);
     }
 }
 
 //ACCESSEURS :
 
-int Jeu::getplateau(int x, int y){
+CouleurPion Jeu::getplateau(int x, int y){
     return m_plateau[x][y];
 }
 
-int Jeu::getp1(){
-    return p1;
+int Jeu::getPrisonniersJ1(){
+    return m_prisonniersJoueurNoir;
 }
 
-int Jeu::getp2(){
-    return p2;
+int Jeu::getPrisonniersJ2(){
+    return m_prisonniersJoueurBlanc;
 }
 
 std::vector<Coup> &Jeu::getcoupsJoues(){

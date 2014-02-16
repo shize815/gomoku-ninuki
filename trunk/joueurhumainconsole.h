@@ -6,7 +6,7 @@
 class JoueurHumainConsole : public Joueur
 {
 public:
-    Coup getCoup();
+    Coup getCoup() override;
 };
 
 #endif // JOUEURHUMAIN_H
