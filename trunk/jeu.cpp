@@ -48,11 +48,17 @@ void Jeu::getCoupEtJoue(Joueur &joueur)
 
 void Jeu::jouePartie()
 {
-    while(!fin()){
-        m_grilleJeu.affiche(m_plateau, m_joueurVictorieux);
+    m_grilleJeu.affiche(m_plateau, m_joueurVictorieux);
+
+    while(!partieFinie()){
         getCoupEtJoue(m_joueur1);
         m_grilleJeu.affiche(m_plateau, m_joueurVictorieux);
+        if (partieFinie()) {
+            break;
+        }
+
         getCoupEtJoue(m_joueur2);
+        m_grilleJeu.affiche(m_plateau, m_joueurVictorieux);
     }
     /* affiche le plateau victorieux */
     m_grilleJeu.affiche(m_plateau, m_joueurVictorieux);
@@ -61,12 +67,10 @@ void Jeu::jouePartie()
 
 
 Resultat Jeu::jouerCoup(Coup coup){
-    if (coup.x > LARGEUR_PLATEAU || coup.y > HAUTEUR_PLATEAU) {
+    if (!coordonneeValide(coup.x, coup.y) ){
         return INVALIDE;
     }
-    if (coup.x < 0 || coup.y < 0) {
-        return INVALIDE;
-    }
+
     if (m_plateau[coup.x][coup.y] != CouleurPion::aucuneCouleur) {
         return INVALIDE;
     }
@@ -77,7 +81,7 @@ Resultat Jeu::jouerCoup(Coup coup){
     return SUCCES;
 }
 
-bool Jeu::fin(){
+bool Jeu::partieFinie(){
     if(m_joueurVictorieux==CouleurPion::aucuneCouleur){
         return false;
     } else {
@@ -86,17 +90,13 @@ bool Jeu::fin(){
 }
 
 // renvoye le nombre de pions de la couleur donnée alignés dans la direction (d1,d2) en partant de la case (x,y)
-int Jeu::lireligne(int px,
+int Jeu::pionsAlignesConsecutifs(int px,
                    int py,
                    int dx, /* +1, -1 ou 0 */
                    int dy,/* +1, -1 ou 0*/
-                   CouleurPion couleur /* 1 ou 2 */){
-    if (px < 0 || px > LARGEUR_PLATEAU - 1) {
-        cerr << "Jeu::lireligne appellée avec paramètre x invalide" << endl;
-        return 0;
-    }
-    if (py < 0 || py > HAUTEUR_PLATEAU - 1) {
-        cerr << "Jeu::lireligne appellée avec paramètre y invalide" << endl;
+                   CouleurPion couleur){
+    if (!coordonneeValide(px, py)){
+        cerr << "Jeu::lireligne appellée avec position invalide" << endl;
         return 0;
     }
 
@@ -108,12 +108,10 @@ int Jeu::lireligne(int px,
         py+=dy;
 
         /* gère les coups en bord de plateau */
-        if (px < 0 || px > LARGEUR_PLATEAU -1) {
+        if (!coordonneeValide(px, py)) {
             break;
         }
-        if (py < 0 || py > HAUTEUR_PLATEAU -1) {
-            break;
-        }
+
     }
 
     return cpt;
@@ -130,6 +128,17 @@ CouleurPion Jeu::oppose(CouleurPion couleur){
         cerr << "couleur invalide";
         return CouleurPion::aucuneCouleur;
     }
+}
+
+bool Jeu::coordonneeValide(int px, int py)
+{
+    if (px < 0 || px > LARGEUR_PLATEAU -1) {
+        return false;
+    }
+    if (py < 0 || py > HAUTEUR_PLATEAU -1) {
+        return false;
+    }
+    return true;
 }
 
 void Jeu::regles(){
@@ -149,11 +158,19 @@ void Jeu::regles(){
             if(i==0 && j==0){
                 continue;
             }
-            if(lireligne(dernierCoupX+i, dernierCoupY+j, i, j, joueurDernierCoup) +
-               lireligne(dernierCoupX-i, dernierCoupY-j, -1*i, -1*j, joueurDernierCoup)  >=4){
+            int pionCote1 = 0;
+            if (coordonneeValide(dernierCoupX+i, dernierCoupY+j) ) {
+                pionCote1 = pionsAlignesConsecutifs(dernierCoupX+i, dernierCoupY+j, i, j, joueurDernierCoup);
+            }
+            int pionCote2 = 0;
+            if (coordonneeValide(dernierCoupX-i, dernierCoupY-j) ) {
+                pionCote2 = pionsAlignesConsecutifs(dernierCoupX-i, dernierCoupY-j, -1*i, -1*j, joueurDernierCoup);
+            }
+            if (pionCote1 + pionCote2 >=4) {
                 //VICTOIRE
                 cout<<"joueur "<<joueurDernierCoup<<" a gagné la partie (5 pierres)"<<endl;
                 m_joueurVictorieux=joueurDernierCoup;
+                return;
             }
         }
     }
@@ -164,14 +181,14 @@ void Jeu::regles(){
             if(i==0 && j==0){
                 continue;
             }
+
+            if (!coordonneeValide(dernierCoupX+i, dernierCoupY+j)){
+                continue;
+            }
             //cout<<"nb l : "<<i<<j<<" : "<<lireligne(cx+i,cy+j, i, j, oppose(joueurDernierCoup))<<endl;
-            if(lireligne(dernierCoupX+i,dernierCoupY+j, i, j, oppose(joueurDernierCoup))==2){
-                if (dernierCoupX +3*i < 0 ||
-                    dernierCoupX+3*i > LARGEUR_PLATEAU - 1 ||
-                    dernierCoupY+3*j < 0 ||
-                    dernierCoupY+3*j > LARGEUR_PLATEAU - 1) {
-                    //en partant du bord du plateau, il y a deux pierres d'une couleur puis une troisième de l'autre couleur
-                    //il n'y a pas de point à manger.
+            if(pionsAlignesConsecutifs(dernierCoupX+i,dernierCoupY+j, i, j, oppose(joueurDernierCoup))==2){
+                if (!coordonneeValide(dernierCoupX +3*i, dernierCoupY+3*j) ){
+                    //en partant du bord du plateau, il y a deux pierres d'une couleur puis une troisième de l'autre couleur.
                     continue;
                 }
                 if(m_plateau[dernierCoupX+3*i][dernierCoupY+3*j]==joueurDernierCoup){
@@ -185,19 +202,16 @@ void Jeu::regles(){
                         m_prisonniersJoueurBlanc+=2;
                     }
                     if(m_prisonniersJoueurNoir==10){
-                        cout<<"JOUEUR 1 A GAGNE avec 10 prisonniers"<<endl;
+                        cout<<"JOUEUR 1 gagne avec 10 prisonniers"<<endl;
                         m_joueurVictorieux=CouleurPion::noir;
                     }
                     if(m_prisonniersJoueurBlanc==10){
-                        cout<<"JOUEUR 2 A GAGNE avec 10 prisonniers"<<endl;
+                        cout<<"JOUEUR 2 gagne avec 10 prisonniers"<<endl;
                         m_joueurVictorieux=CouleurPion::blanc;
                     }
                 }
             }
         }
-    }
-    if(m_joueurVictorieux!=CouleurPion::aucuneCouleur){
-        cout<<"joueur "<<m_joueurVictorieux<<" a gagné"<<endl;
     }
 }
 
