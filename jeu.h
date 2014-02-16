@@ -47,10 +47,10 @@ class Jeu : public QObject
         CouleurPion oppose(CouleurPion couleur); //retourne la couleur inverse à la couleur entrée
         Resultat jouerCoup(Coup coup);
         void regles(); //Applique les règles du jeu.
-        bool fin(); //renvoie vrai si la partie est finie.
+        bool partieFinie(); //renvoie vrai si la partie est finie.
 
         //renvoie le nombre de pions de la couleur donné aligné dans la direction (d1,d2) en partant de la case (x,y)
-        int lireligne(int px, int py, int dx, int dy, CouleurPion couleur);
+        int pionsAlignesConsecutifs(int px, int py, int dx, int dy, CouleurPion couleur);
         void getCoupEtJoue(Joueur &joueur);
         std::vector<Coup> coupsJoues;
 
@@ -63,9 +63,11 @@ class Jeu : public QObject
         Joueur &m_joueur1;
         Joueur &m_joueur2;
 
+        //renvoie true si la position existe sur le plateau, false sinon
+        bool coordonneeValide(int px, int py);
         int m_prisonniersJoueurNoir;
         int m_prisonniersJoueurBlanc;
-        CouleurPion m_joueurVictorieux; //0 si la partie est en cours, sinon le numero de vainqueur.
+        CouleurPion m_joueurVictorieux;
 };
 
 #endif // JEU_H

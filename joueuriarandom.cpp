@@ -54,7 +54,7 @@ Coup JoueurIaRandom::getCoup()
 {
     Coup coup = coupRand();
     
-    cout << "l'IA joue x " << coup.x << ",y " << coup.y << " (joueur" << coup.couleur << ")" << endl;
+    cout << "IA random " << m_couleurPion <<" joue x " << coup.x << ",y " << coup.y << endl;
     return coup;
 }
 

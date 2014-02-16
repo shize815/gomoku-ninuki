@@ -4,13 +4,13 @@ SOURCES += \
     joueurhumainconsole.cpp \
     joueurhumaingui.cpp \
     pion.cpp \
-    joueurIArandom.cpp \
     joueuriaintelligent.cpp \
     grillejeuconsole.cpp \
     widgetgrillejeu.cpp \
     grillejeugraphique.cpp \
     fenetreprincipale.cpp \
-    choixtypejoueur.cpp
+    choixtypejoueur.cpp \
+    joueuriarandom.cpp
 
 HEADERS += \
     jeu.h \
