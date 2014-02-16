@@ -10,6 +10,7 @@
 #include <QGraphicsGridLayout>
 #include <QtGui>
 
+#include "couleurpion.h"
 #include "jeu.h"
 #include "pion.h"
 
@@ -19,7 +20,7 @@ class WidgetGrilleJeu : public QWidget
     Q_OBJECT
 public:
     explicit WidgetGrilleJeu(int largeur, int hauteur, QWidget *parent = 0);
-    void affiche(std::vector < std::vector <int> > &plateau);
+    void affiche(std::vector < std::vector <CouleurPion> > &plateau);
 
 signals:
     void sigPionClique(int xNumero, int yNumero);

@@ -22,7 +22,7 @@ Coup JoueurHumainGui::getCoup()
         cout << "Jeu quitté. " << endl;
         exit(EXIT_SUCCESS);
     }
-    cout << "Joueur " << m_numeroJoueur <<
+    cout << "Joueur " << m_couleurPion <<
             " joue x " << m_coupClique.x <<
             ",y " << m_coupClique.y << " (joueur humain)" << endl;
     m_coupValide = false;

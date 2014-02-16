@@ -5,7 +5,7 @@
 
 class JoueurIaIntelligent : public Joueur
 {
-    Coup getCoup();
+    Coup getCoup() override;
 public:
     JoueurIaIntelligent();
 };

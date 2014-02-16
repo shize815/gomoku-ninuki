@@ -62,7 +62,7 @@ void WidgetGrilleJeu::slotPionClique(int xNumero, int yNumero)
     emit sigPionClique(xNumero, yNumero);
 }
 
-void WidgetGrilleJeu::affiche(std::vector < std::vector <int> > &plateau)
+void WidgetGrilleJeu::affiche(std::vector < std::vector <CouleurPion> > &plateau)
 {
     QBrush whiteBrush(Qt::white);
     QBrush blackBrush(Qt::black);
@@ -73,14 +73,14 @@ void WidgetGrilleJeu::affiche(std::vector < std::vector <int> > &plateau)
                 ne peuvent pas recevoir d'event "clic de souris", pareil si on utilise setOpacity(0,0).
                 Avec setOpacity(0.01) le pion n'est pas visible mais attrape quand même les évènements de clics. */
             switch (plateau[y][x]) {
-            case 0:
+            case CouleurPion::aucuneCouleur:
                 m_pions[x][y]->setOpacity(0.01);
                 break;
-            case 1:
+            case CouleurPion::noir:
                 m_pions[x][y]->setBrush(blackBrush);
                 m_pions[x][y]->setOpacity(1.0);
                 break;
-            case 2:
+            case CouleurPion::blanc:
                 m_pions[x][y]->setBrush(whiteBrush);
                 m_pions[x][y]->setOpacity(1.0);
                 break;

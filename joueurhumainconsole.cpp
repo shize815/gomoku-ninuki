@@ -8,9 +8,9 @@ using namespace std;
 Coup JoueurHumainConsole::getCoup()
 {
     Coup coup;
-    coup.numeroJoueur = m_numeroJoueur;
+    coup.couleur = m_couleurPion;
 		    
-    cout<<"coup joueur :" << m_numeroJoueur << endl;
+    cout<<"coup joueur :" << m_couleurPion << endl;
 
     cout<<"            y :" << endl;
     cin>>coup.y;
