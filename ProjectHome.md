@@ -1,0 +1,1 @@
+A gomoku ninuki game with GUI and AI write in C++
